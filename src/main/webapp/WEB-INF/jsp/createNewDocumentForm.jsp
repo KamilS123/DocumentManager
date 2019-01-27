@@ -14,14 +14,11 @@
     <h1>Please pass your document details...</h1>
 </div>
 <div id="registryForm">
-    <form method="post" action="/addUser">
+    <form method="post" action="/selectDocument">
         <input type="text" name="documentDescription" placeholder="Document description">
         <input type="text" name="documentComments" placeholder="Document comments">
+        <input type="file" name="chooseDocument" value="Select">
         <input type="submit" value="Save details">
-    </form>
-
-    <form method="post" action="/login">
-        <input type="submit" value="Go back to login">
     </form>
 </div>
 </body>

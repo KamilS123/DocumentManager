@@ -2,7 +2,6 @@ package com.kamil.DocumentManager.models;
 
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -30,12 +29,12 @@ public class Document {
 
     @Column(name = "content")
     @Lob
-    private Blob content;
+    private byte[] content;
 
     public Document() {
     }
 
-    public Document(String documetn_name, String document_description, String document_comments, LocalDateTime add_date, LocalDateTime edition_date, Blob content) {
+    public Document(String documetn_name, String document_description, String document_comments, LocalDateTime add_date, LocalDateTime edition_date, byte[] content) {
         this.documetn_name = documetn_name;
         this.document_description = document_description;
         this.document_comments = document_comments;
@@ -98,11 +97,11 @@ public class Document {
         this.edition_date = edition_date;
     }
 
-    public Blob getContent() {
+    public byte[] getContent() {
         return content;
     }
 
-    public void setContent(Blob content) {
+    public void setContent(byte[] content) {
         this.content = content;
     }
 
