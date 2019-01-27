@@ -15,7 +15,7 @@
 </div>
 
 <div id="menuForm">
-    <form>
+    <form method="post" action="/createNewDocument">
         <input type="submit" value="Add new document"/>
     </form>
 
