@@ -8,12 +8,13 @@ import java.time.format.DateTimeFormatter;
 @Entity
 @Table(name = "document")
 public class Document {
+
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(name = "document_name")
-    private String documetn_name;
+    private String document_name;
 
     @Column(name = "document_description")
     private String document_description;
@@ -34,8 +35,8 @@ public class Document {
     public Document() {
     }
 
-    public Document(String documetn_name, String document_description, String document_comments, LocalDateTime add_date, LocalDateTime edition_date, byte[] content) {
-        this.documetn_name = documetn_name;
+    public Document(String document_name, String document_description, String document_comments, LocalDateTime add_date, LocalDateTime edition_date, byte[] content) {
+        this.document_name = document_name;
         this.document_description = document_description;
         this.document_comments = document_comments;
         this.add_date = add_date;
@@ -51,12 +52,12 @@ public class Document {
         this.id = id;
     }
 
-    public String getDocumetn_name() {
-        return documetn_name;
+    public String getdocument_name() {
+        return document_name;
     }
 
-    public void setDocumetn_name(String documetn_name) {
-        this.documetn_name = documetn_name;
+    public void setdocument_name(String document_name) {
+        this.document_name = document_name;
     }
 
     public String getDocument_description() {
@@ -79,10 +80,8 @@ public class Document {
         return add_date;
     }
 
-    public void setAdd_date(LocalDateTime add_date) {
-        String date = "2019-01-27 01:30:00";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LL-dd HH:mm:ss");
-        add_date = LocalDateTime.parse(date,formatter);
+    public void setAdd_date() {
+       LocalDateTime add_date = LocalDateTime.now();
         this.add_date = add_date;
     }
 
@@ -90,11 +89,9 @@ public class Document {
         return edition_date;
     }
 
-    public void setEdition_date(LocalDateTime edition_date) {
-        String date = "2019-01-27 01:30:00";
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-LL-dd HH:mm:ss");
-        edition_date = LocalDateTime.parse(date,formatter);
-        this.edition_date = edition_date;
+    public void setEdition_date() {
+        LocalDateTime edition_date = LocalDateTime.now();
+       this.edition_date = edition_date;
     }
 
     public byte[] getContent() {
@@ -109,7 +106,7 @@ public class Document {
     public String toString() {
         return "Document{" +
                 "id=" + id +
-                ", documetn_name='" + documetn_name + '\'' +
+                ", document_name='" + document_name + '\'' +
                 ", document_description='" + document_description + '\'' +
                 ", document_comments='" + document_comments + '\'' +
                 ", add_date=" + add_date +

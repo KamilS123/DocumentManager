@@ -19,7 +19,7 @@
         <input type="submit" value="Add new document"/>
     </form>
 
-    <form>
+    <form method="post" action="/docMenuShow">
         <input type="submit" value="Edit documents"/>
     </form>
 

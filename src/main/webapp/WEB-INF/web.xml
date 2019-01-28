@@ -18,3 +18,22 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 </web-app>
+
+<jnlp spec="1.0+" codebase="http://127.0.0.1:8080/" href="importServer.jnlp">
+<information>
+    <title>Import Server</title>
+    <vendor>XYZ</vendor>
+</information>
+<resources>
+    <!-- Application Resources -->
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="importServer.jar" main="true" />
+</resources>
+<application-desc
+        name="Import Server"
+        main-class="importServer.ImportServer"
+        width="300"
+        height="300">
+</application-desc>
+<update check="background"/>
+</jnlp>
