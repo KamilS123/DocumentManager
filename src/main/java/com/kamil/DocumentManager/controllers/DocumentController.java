@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.print.Doc;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -53,20 +54,23 @@ public class DocumentController {
 
     //from userMainContent(menu) for editing choosen file. Sowing list with documents
     @RequestMapping("/docMenuShow")
-    public String documentEdition(Model model) {
+    public String documentEdition(@RequestParam("loginID")Long loginID, Model model) {
         //all elements from document tatabase
         List<Document> documentList = (List<Document>) documentRepository.findAll();
         model.addAttribute("documentList",documentList);
-        return "documentMenu";
+        model.addAttribute("loginID",loginID);
+        return "documentList";
     }
 
     //from documentMenu to edit. User decided edit
     @RequestMapping("/editDocFromList")
-    public String editForm() {
+    public String editForm(@RequestParam("loginID")Long loginID, @RequestParam("docID")Long docID, Model model) {
+        model.addAttribute("docID",docID);
+        model.addAttribute("loginID",loginID);
         return "editDocumentContent";
     }
 
-    //from documentMenu. User decided delefe document
+    //from documentMenu. User decided delete document
     @RequestMapping("/deleteDocument")
     public String editDocFromList(@RequestParam("docNameValue") String docNameValue, Model model) {
         List<Document>documentsList = (List<Document>) documentRepository.findAll();
@@ -77,14 +81,25 @@ public class DocumentController {
                 documentRepository.delete(document);
             }
         }
-        return "documentMenu";
+        return "userMainContent";
     }
 
     //from editDocumentContent passing parameters to edit document
     @RequestMapping(value = "/saveEditedDocuments", method = RequestMethod.POST)
-    @ResponseBody
-    public String saveEditedDocuments(@RequestParam("documentName") String documentName,/*, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, */Model model) {
-        documentRepository.updateDocument(documentName);
+    public String saveEditedDocuments(@RequestParam("loginID")Long loginID, @RequestParam("docID")Long docID, @RequestParam("documentNameValue")String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) {
+        //getting local time for updatind etition time
+        LocalDateTime localDateTime = LocalDateTime.now();
+        List<Document>documentsList = (List<Document>) documentRepository.findAll();
+        for(Document document : documentsList) {
+            if(document.getId()==docID) {
+                /*System.out.println("id tooooooooooo    !!!!!!!!"  + docID);
+                model.addAttribute("loginID",loginID);*/
+                //update document details
+                documentRepository.updateDocument(documentName,documentComments,documentDescription,docID,localDateTime);
+                return "userMainContent";
+            }
+        }
+        System.out.println("passed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + docID);
         return "saved";
     }
 }

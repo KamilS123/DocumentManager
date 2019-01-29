@@ -8,12 +8,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Repository
 public interface DocumentRepository extends JpaRepository<Document,Long> {
 
     @Modifying
     @Transactional(readOnly = false)
-    @Query("update Document d set d.document_name=:docName where d.document_name=5")
-    void updateDocument(@Param("docName")String docName);
-
+    @Query("update Document d set d.document_name=:docName, d.document_comments=:docCom, d.document_description=:docDesc, d.edition_date=:editDate where d.id=:docID")
+    void updateDocument(@Param("docName")String docName, @Param("docCom")String docCom, @Param("docDesc")String docDesc, @Param("docID")Long docID, @Param("editDate")LocalDateTime date);
 }

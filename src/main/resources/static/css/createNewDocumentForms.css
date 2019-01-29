@@ -1,0 +1,56 @@
+#createNewDocHeader {
+    margin: 20px auto auto auto;
+    padding: 30px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    border-bottom: 5px solid white;
+}
+#createNewDocPassingDataForm
+{
+    border: 4px solid black;
+    width: 300px;
+    height: 300px;
+    margin: 50px auto 0 auto
+}
+
+#createNewDocPassingDataForm form {
+    text-align: center;
+}
+
+#createNewDocPassingDataForm form input {
+    width: 250px;
+    height: 40px;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 3px;
+}
+#newDocSubmit
+{
+    font-size: 20px;
+}
+#newDocSubmit:hover
+{
+    background-color: black;
+    color: white;
+}
+/*
+
+#registryForm {
+    width: 300px;
+    height: 300px;
+    background-color: lightblue;
+    margin: 50px auto 0 auto;
+}
+
+#registryForm form {
+    text-align: center;
+}
+
+#registryForm form input {
+    width: 250px;
+    height: 30px;
+    padding: 20px;
+    margin-top: 10px;
+}*/

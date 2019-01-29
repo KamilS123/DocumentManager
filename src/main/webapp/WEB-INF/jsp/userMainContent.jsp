@@ -1,55 +1,73 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<!doctype html>
-<html lang="pl">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="css/userMainContent.css"/>
+    <link rel="stylesheet" type="text/css" href="css/userMainContents.css"/>
 </head>
+<style>
+    body {
+        background-image: url("img/middle.jpg");
+        background-size: cover;
+    }
+</style>
 <body>
-<div id="header">
-    <h1>Hi <span style="color: red">${loginName}...</span></h1>
+<div id="main">
+    <div id="mainContentModeratorForm">
+        <form>
+            <input type="submit" value="User"/>
+        </form>
+        <form>
+            <input type="submit" value="Moderator"/>
+        </form>
+        <form>
+            <input type="submit" value="Admin"/>
+        </form>
+    </div>
+    <div id="mainContentHeader">
+        <h1>User <span style="color: black">${loginName} ${loginSurname}</span></h1>
+        <form>
+            <input type="text" name="docNameToFind" placeholder="Find document by name..."/>
+        </form>
+    </div>
+    <div style="clear: both"></div>
 </div>
+<div id="menuAndManiContentDiv">
+    <div id="mainContentMenu">
+        <h3 id="mainContentMenuH3">MENU</h3>
 
-<div id="menuForm">
-    <form method="post" action="/createNewDocument">
-        <input type="submit" value="Add new document"/>
-    </form>
+        <form method="post" action="/createNewDocument">
+            <input type="submit" value="Add new document"/>
+        </form>
 
-    <form method="post" action="/docMenuShow">
-        <input type="submit" value="Edit documents"/>
-    </form>
+        <form method="post" action="/docMenuShow">
+            <input type="hidden" value="${loginID}" name="loginID"/>
+            <input type="submit" value="Edit/Delete"/>
+        </form>
 
-    <form>
-        <input type="submit" value="Add comment"/>
-    </form>
+        <form>
+            <input type="submit" value="Review document"/>
+        </form>
 
-    <form>
-        <input type="submit" value="Review document"/>
-    </form>
+        <form>
+            <input type="submit" value="Download document"/>
+        </form>
 
-    <form>
-        <input type="submit" value="Download document"/>
-    </form>
+        <form>
+            <input type="submit" value="Sort documents"/>
+        </form>
 
-    <form>
-        <input type="submit" value="Find document"/>
-    </form>
+        <form>
+            <input type="submit" value="Send message to admin"/>
+        </form>
 
-    <form>
-        <input type="submit" value="Sort documents"/>
-    </form>
+        <form method="post" action="/changePassword">
+            <input type="hidden" value="${loginID}" name="loginID"/>
+            <input type="submit" value="Change password"/>
+        </form>
+    </div>
+    <div id="userContent">
 
-    <form>
-        <input type="submit" value="Send message to admin"/>
-    </form>
-
-    <form>
-        <input type="submit" value="Change password"/>
-    </form>
+    </div>
+    <div style="clear: both"></div>
 </div>
 </body>
 </html>

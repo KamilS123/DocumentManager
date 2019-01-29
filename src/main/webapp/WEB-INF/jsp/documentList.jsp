@@ -2,10 +2,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <head>
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="css/documentMenu.css"/>
+    <link rel="stylesheet" type="text/css" href="css/documentsMenu.css"/>
 </head>
+<style>
+    body {
+        background-image: url("img/middle.jpg");
+        background-size: cover;
+    }
+</style>
 <body>
-<h2>List of your documents...</h2>
+<div id="documentMenuHeader">
+    <h2>List of your documents...</h2>
+</div>
 <table>
     <tr>
         <th>Name</th>
@@ -15,7 +23,7 @@
         <th>Edition date</th>
     </tr>
     <c:forEach var="element" items="${documentList}">
-    <tr>
+        <tr>
             <td>${element.getdocument_name()}</td>
             <td>${element.getDocument_description()}</td>
             <td>${element.getDocument_comments()}</td>
@@ -23,17 +31,18 @@
             <td>${element.getEdition_date()}</td>
             <td>
                 <form method="post" action="/editDocFromList">
-                    <input type="hidden" name="docNameValue" value="${element.getdocument_name()}"/>
+                    <input type="hidden" name="docID" value="${element.getId()}"/>
+                    <input type="hidden" name="loginID" value="${loginID}"/>
                     <input type="submit" value="Edit"/>
                 </form>
             </td>
             <td>
                 <form method="post" action="/deleteDocument">
-                    <input type="hidden" name="docNameValue" value="${element.getdocument_name()}"/>
+                    <input type="hidden" name="docID" value="${element.getId()}"/>
                     <input type="submit" value="Delete"/>
                 </form>
             </td>
-    </tr>
+        </tr>
     </c:forEach>
 </table>
 

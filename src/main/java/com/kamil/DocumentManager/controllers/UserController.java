@@ -44,7 +44,7 @@ public class UserController {
         model.addAttribute("userStatus","user");
         return "createdUser";
     }
-
+        //from login checking login data
     @RequestMapping("/checkData")
     public String checkUser(@RequestParam()String loginName, @RequestParam() String loginSurname, @RequestParam()String loginPassword, Model model) {
         //adding all User to list for checkin user details
@@ -53,9 +53,24 @@ public class UserController {
         for(User user: userList) {
             if (user.getName().equals(loginName) && user.getSurname().equals(loginSurname) && user.getPassword().equals(loginPassword)) {
                 model.addAttribute("loginName",loginName);
+                model.addAttribute("loginSurname",loginSurname);
+                model.addAttribute("loginID", user.getId());
                 return "userMainContent";
             }
         }
         return "redirect:login";
+    }
+
+    //from userMainContent changing password byUserName
+    @RequestMapping("/changePassword")
+    public String changeUserPassword(@RequestParam("loginID")Long loginID) {
+        List<User> userList = (List<User>)userRepository.findAll();
+        for(User user : userList) {
+            if (user.getId().equals(loginID)) {
+                userRepository.updatePassword("noooole",loginID);
+                return "userMainContent";
+            }
+        }
+        return "";
     }
 }
