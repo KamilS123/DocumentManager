@@ -33,17 +33,25 @@
                 <form method="post" action="/editDocFromList">
                     <input type="hidden" name="docID" value="${element.getId()}"/>
                     <input type="hidden" name="loginID" value="${loginID}"/>
+                    <input type="hidden" value="${loginName}" name="loginName"/>
+                    <input type="hidden" value="${loginSurname}" name="loginSurname"/>
                     <input type="submit" value="Edit"/>
                 </form>
             </td>
             <td>
                 <form method="post" action="/deleteDocument">
                     <input type="hidden" name="docID" value="${element.getId()}"/>
+                    <input type="hidden" name="loginID" value="${loginID}"/>
+                    <input type="hidden" value="${loginName}" name="loginName"/>
+                    <input type="hidden" value="${loginSurname}" name="loginSurname"/>
                     <input type="submit" value="Delete"/>
                 </form>
             </td>
         </tr>
     </c:forEach>
+    <form id="goToMenuBtn" method="post" action="/goToMainContent">
+        <input  type="submit" value="Go to menu">
+    </form>
 </table>
 
 </body>

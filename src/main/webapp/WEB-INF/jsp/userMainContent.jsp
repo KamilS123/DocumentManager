@@ -1,7 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>Document</title>
-    <link rel="stylesheet" type="text/css" href="css/userMainContents.css"/>
+    <link rel="stylesheet" type="text/css" href="css/userMainContent.css"/>
 </head>
 <style>
     body {
@@ -23,8 +24,8 @@
         </form>
     </div>
     <div id="mainContentHeader">
-        <h1>User <span style="color: black">${loginName} ${loginSurname}</span></h1>
-        <form>
+        <h1><span style="color: black">${loginName} ${loginSurname}</span></h1>
+        <form method="post" action="/findDocByName">
             <input type="text" name="docNameToFind" placeholder="Find document by name..."/>
         </form>
     </div>
@@ -35,11 +36,16 @@
         <h3 id="mainContentMenuH3">MENU</h3>
 
         <form method="post" action="/createNewDocument">
+            <input type="hidden" value="${loginID}" name="loginID"/>
+            <input type="hidden" value="${loginName}" name="loginName"/>
+            <input type="hidden" value="${loginSurname}" name="loginSurname"/>
             <input type="submit" value="Add new document"/>
         </form>
 
         <form method="post" action="/docMenuShow">
             <input type="hidden" value="${loginID}" name="loginID"/>
+            <input type="hidden" value="${loginName}" name="loginName"/>
+            <input type="hidden" value="${loginSurname}" name="loginSurname"/>
             <input type="submit" value="Edit/Delete"/>
         </form>
 
@@ -65,7 +71,35 @@
         </form>
     </div>
     <div id="userContent">
-
+        <table>
+            <c:forEach var="element" items="${docNameToFind}">
+                <tr>
+                    <%--<td>${element.getdocument_name()}</td>--%>
+                    <td>${element.getDocument_description()}</td>
+                    <td>${element.getDocument_comments()}</td>
+                    <td>${element.getAdd_date()}</td>
+                    <td>${element.getEdition_date()}</td>
+                        <td>
+                            <form method="post" action="/editDocFromList">
+                                <input type="hidden" name="docID" value="${element.getId()}"/>
+                                <input type="hidden" name="loginID" value="${loginID}"/>
+                                <input type="hidden" value="${loginName}" name="loginName"/>
+                                <input type="hidden" value="${loginSurname}" name="loginSurname"/>
+                                <input type="submit" value="Edit"/>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="post" action="/deleteDocument">
+                                <input type="hidden" name="docID" value="${element.getId()}"/>
+                                <input type="hidden" name="loginID" value="${loginID}"/>
+                                <input type="hidden" value="${loginName}" name="loginName"/>
+                                <input type="hidden" value="${loginSurname}" name="loginSurname"/>
+                                <input type="submit" value="Delete"/>
+                            </form>
+                        </td>
+                </tr>
+            </c:forEach>
+        </table>
     </div>
     <div style="clear: both"></div>
 </div>

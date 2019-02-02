@@ -73,4 +73,8 @@ public class UserController {
         }
         return "";
     }
+    @RequestMapping("/goToMainContent")
+    public String goToMainContent() {
+        return "userMainContent";
+    }
 }
