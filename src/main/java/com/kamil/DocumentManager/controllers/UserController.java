@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+
 @Controller
 @RequestMapping("/")
 public class UserController {
@@ -46,7 +47,7 @@ public class UserController {
     }
         //from login checking login data
     @RequestMapping("/checkData")
-    public String checkUser(@RequestParam()String loginName, @RequestParam() String loginSurname, @RequestParam()String loginPassword, Model model) {
+    public String checkUser(@RequestParam("loginName")String loginName, @RequestParam("loginSurname") String loginSurname, @RequestParam("loginPassword")String loginPassword, Model model) {
         //adding all User to list for checkin user details
         List<User> userList = (List<User>)userRepository.findAll();
         //iterating userList. If name, surname, password equals details from database go to userMainContent else redirect to login
@@ -72,9 +73,5 @@ public class UserController {
             }
         }
         return "";
-    }
-    @RequestMapping("/goToMainContent")
-    public String goToMainContent() {
-        return "userMainContent";
     }
 }

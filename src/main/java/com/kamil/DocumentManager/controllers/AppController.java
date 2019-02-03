@@ -5,9 +5,6 @@ import com.kamil.DocumentManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 @Controller
@@ -23,14 +20,5 @@ public class AppController {
     @RequestMapping("/login")
     private String sendToLogin() {
         return "login";
-    }
-
-    //httpServletResquest zawiera informacje o serverach
-    @RequestMapping("/server")
-    @ResponseBody
-    public String set(HttpServletRequest request) {
-        String browserName = request.getHeader("User-Agent");
-        String id = request.getRemoteAddr();
-        return browserName + " ...... " + id;
     }
 }
