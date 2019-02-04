@@ -22,7 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select name, surname,password from user where name=?")
+                .usersByUsernameQuery("select name, surname,password,status from user where name=?")
                 .authoritiesByUsernameQuery("select status from user where name=?")
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
@@ -37,7 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/checkData").permitAll()
                 .antMatchers("/addUser").permitAll()
                 .antMatchers("/goToMainContent").permitAll()
-                .and().formLogin().loginPage("/login");
+                .and().formLogin().loginPage("/login")
+                .usernameParameter("name")
+                .passwordParameter("password")
+                .and()
+                .logout().logoutSuccessUrl("/login");
     }
     @Bean(name = "passwordEncoder")
     public PasswordEncoder passwordEncoder() {

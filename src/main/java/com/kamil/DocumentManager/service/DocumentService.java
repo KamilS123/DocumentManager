@@ -1,14 +1,9 @@
 package com.kamil.DocumentManager.service;
 
-import com.kamil.DocumentManager.repository.DocumentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.kamil.DocumentManager.models.Document;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-@Service
-public class DocumentService {
-    @Autowired
-    private DocumentRepository documentRepository;
-
-   public void updateName(Long id) {
-   }
+public interface DocumentService {
+    Page<Document>findAllDocumentsPageable(Pageable pageable);
 }
