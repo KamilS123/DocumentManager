@@ -3,7 +3,6 @@ package com.kamil.DocumentManager.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "document")

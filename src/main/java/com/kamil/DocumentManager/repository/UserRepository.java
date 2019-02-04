@@ -13,5 +13,10 @@ public interface UserRepository extends CrudRepository<User,Long> {
     @Modifying
     @Transactional(readOnly = false    )
     @Query("update User u set u.password=:newPassword where u.id=:id")
-    void updatePassword(@Param("newPassword")String newPassword, @Param("id")Long id);
+    void updatePassword(@Param("newPassword") String newPassword, @Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query("update User u set u.status=:newStatus where u.id=:id")
+    void updateStatus(@Param("newStatus") String newStatus, @Param("id") Long id);
 }

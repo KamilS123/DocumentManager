@@ -9,7 +9,9 @@
 <div id="registryForm">
     <form method="post" action="/saveEditedDocuments">
         <input type="hidden" name="docID" value="${docID}"/>
-        <input type="hidden" name="loginID" value="${loginID}"/>
+       <%-- <input type="hidden" name="loginID" value="${loginID}"/>
+        <input type="hidden" value="${loginName}" name="loginName"/>
+        <input type="hidden" value="${loginSurname}" name="loginSurname"/>--%>
         <input type="text" name="documentNameValue" placeholder="Document name">
         <input type="text" name="documentDescription" placeholder="Document description">
         <input type="text" name="documentComments" placeholder="Document comments">

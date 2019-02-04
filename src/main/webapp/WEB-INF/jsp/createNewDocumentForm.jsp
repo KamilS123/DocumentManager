@@ -15,6 +15,9 @@
 </div>
 <div id="createNewDocPassingDataForm">
     <form method="post" action="/selectDocument" enctype="multipart/form-data">
+        <%--<input type="hidden" value="${loginID}" name="loginID"/>
+        <input type="hidden" value="${loginName}" name="loginName"/>
+        <input type="hidden" value="${loginSurname}" name="loginSurname"/>--%>
         <input type="text" name="documentName" placeholder="Document name">
         <input type="text" name="documentDescription" placeholder="Document description">
         <input type="text" name="documentComments" placeholder="Document comments">

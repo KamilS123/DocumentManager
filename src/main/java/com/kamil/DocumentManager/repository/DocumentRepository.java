@@ -12,17 +12,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface DocumentRepository extends JpaRepository<Document,Long> {
+public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     @Modifying
     @Transactional(readOnly = false)
-    @Query("update Document d set d.document_name=:docName, d.document_comments=:docCom, d.document_description=:docDesc, d.edition_date=:editDate where d.id=:docID")
-    void updateDocument(@Param("docName")String docName, @Param("docCom")String docCom, @Param("docDesc")String docDesc, @Param("docID")Long docID, @Param("editDate")LocalDateTime date);
+    @Query(value = "update Document d set d.document_name=:docName, d.document_comments=:docCom, d.document_description=:docDesc, d.edition_date=:editDate where d.id=:docID")
+    void updateDocument(@Param("docName") String docName, @Param("docCom") String docCom, @Param("docDesc") String docDesc, @Param("docID") Long docID, @Param("editDate") LocalDateTime date);
 
-    @Modifying
-    @Transactional(readOnly = false)
-    @Query("select document_name,document_description,document_comments,add_date,edition_date from Document d where d.document_name=:docName")
-    List<Document> findDocByName(@Param("docName")String docName);
-
-
+    @Query("select d from Document d where d.document_name=:docName")
+    List<Document> findDocByName(@Param("docName") String docName);
 }

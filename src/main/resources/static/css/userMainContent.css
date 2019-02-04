@@ -69,4 +69,11 @@
     height: 300px;
     width: 70%;
     border: 3px dotted white;
+    font-size: 30px;
+}
+#tableRow td
+{
+    font-size: 30px;
+    font-weight: bold;
+    background-color: gray;
 }

@@ -3,6 +3,7 @@ package com.kamil.DocumentManager.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+
 @Configuration
 public class MvcConfig {
     @Bean
