@@ -28,8 +28,14 @@ public class AppController {
         log.log(Level.INFO, "Login");
         return "login";
     }
+    //from login sending to registry.jsp for creating new user
+    @RequestMapping("/registry")
+    public String registration() {
+        log.log(Level.INFO, "Registration");
+        return "registry";
+    }
 
-    //httpServletResquest zawiera informacje o serverach
+    //httpServletResquest zawiera informacje
     @RequestMapping("/server")
     @ResponseBody
     public String set(HttpServletRequest request) {

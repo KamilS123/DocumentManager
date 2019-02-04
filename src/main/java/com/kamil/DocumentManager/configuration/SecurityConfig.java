@@ -1,4 +1,3 @@
-/*
 package com.kamil.DocumentManager.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +22,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select name, surname,password from User where name=?")
-                .authoritiesByUsernameQuery("select status from User where name=?")
+                .usersByUsernameQuery("select name, surname,password from user where name=?")
+                .authoritiesByUsernameQuery("select status from user where name=?")
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/addUser").permitAll()
                 .antMatchers("/registry").permitAll()
-                .antMatchers("/checkData").hasAnyRole("user","admin","moderator")
+                .antMatchers("/checkData").permitAll()
+                .antMatchers("/addUser").permitAll()
+                .antMatchers("/goToMainContent").permitAll()
                 .and().formLogin().loginPage("/login");
     }
     @Bean(name = "passwordEncoder")
@@ -42,4 +44,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
-*/

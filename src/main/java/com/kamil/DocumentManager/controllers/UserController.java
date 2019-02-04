@@ -29,13 +29,6 @@ public class UserController {
     @Autowired
     private DocumentRepository documentRepository;
 
-    //from login sending to registry.jsp for creating new user
-    @RequestMapping("/registry")
-    public String registration() {
-        log.log(Level.INFO, "Registration");
-        return "registry";
-    }
-
     //creating new user and sending to create.jsp
     @RequestMapping("/addUser")
     private String addUser(@RequestParam("registryName") String registryName, @RequestParam("registrySurname") String registrySurname, @RequestParam("registryPassword") String registryPassword, Model model) {
@@ -72,7 +65,6 @@ public class UserController {
                 model.addAttribute("loginName", loginName);
                 model.addAttribute("loginSurname", loginSurname);
                 model.addAttribute("loginID", user.getId());
-
                 log.log(Level.INFO, "Check data");
                 //set cookie with user id
                 Cookie cookieLoginId = new Cookie("userID", String.valueOf(user.getId()));
