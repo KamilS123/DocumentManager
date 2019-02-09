@@ -68,8 +68,11 @@
         <table style="width: 100%">
             <tr>
                 <th>
-                    <form id="sortBtn" method="post" action="sortByName">
-                        <input type="submit" value="Login" style="background:url('img/sort.png');">                    </form>
+                    <div id="sortBtn">
+                        <form method="post" action="sortByName">
+                            <input type="submit" value="Sort by name"/>Name
+                        </form>
+                    </div>
                 </th>
                 <th>Description</th>
                 <th>Comments</th>
@@ -83,18 +86,18 @@
                     <td>${element.getDocument_comments()}</td>
                     <td>${element.getAdd_date()}</td>
                     <td>${element.getEdition_date()}</td>
-                        <td>
-                            <form method="post" action="/editDocFromList">
-                                <input type="hidden" name="docID" value="${element.getId()}"/>
-                                <input type="submit" value="Edit"/>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="post" action="/deleteDocument">
-                                <input type="hidden" name="docID" value="${element.getId()}"/>
-                                <input type="submit" value="Delete"/>
-                            </form>
-                        </td>
+                    <td>
+                        <form method="post" action="/editDocFromList">
+                            <input type="hidden" name="docID" value="${element.getId()}"/>
+                            <input type="submit" value="Edit"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="/deleteDocument">
+                            <input type="hidden" name="docID" value="${element.getId()}"/>
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </td>
                 </tr>
             </c:forEach>
         </table>

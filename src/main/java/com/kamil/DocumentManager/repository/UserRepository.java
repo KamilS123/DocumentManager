@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends CrudRepository<User,Long> {
     @Modifying
     @Transactional(readOnly = false    )
-    @Query("update User u set u.password=:newPassword where u.id=:id")
-    void updatePassword(@Param("newPassword") String newPassword, @Param("id") Long id);
+    @Query("update User u set u.password=:newPassword")
+    void updatePassword(@Param("newPassword") String newPassword);
 
     @Modifying
     @Transactional
