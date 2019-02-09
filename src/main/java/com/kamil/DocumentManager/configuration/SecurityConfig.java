@@ -22,26 +22,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select name, surname,password,status from user where name=?")
-                .authoritiesByUsernameQuery("select status from user where name=?")
+                .usersByUsernameQuery("select name,password,true from user where name=?")
+                .authoritiesByUsernameQuery("select name, status from user where name=?")
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/addUser").permitAll()
                 .antMatchers("/registry").permitAll()
-                .antMatchers("/checkData").permitAll()
-                .antMatchers("/addUser").permitAll()
-                .antMatchers("/goToMainContent").permitAll()
-                .and().formLogin().loginPage("/login")
-                .usernameParameter("name")
-                .passwordParameter("password")
+//                .antMatchers("/goToMainContent").authenticated()
+                .and().formLogin()
+                .loginPage("/login")
+                .usernameParameter("loginName")
+                .passwordParameter("loginPassword")
+                .successForwardUrl("/goToMainContent")
                 .and()
-                .logout().logoutSuccessUrl("/login");
+                .logout().logoutSuccessUrl("/login")
+                .and()
+                .csrf().disable();
     }
     @Bean(name = "passwordEncoder")
     public PasswordEncoder passwordEncoder() {

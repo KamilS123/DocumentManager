@@ -4,16 +4,14 @@ import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,19 +26,21 @@ public class UserController {
 
     @Autowired
     private DocumentRepository documentRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     //creating new user and sending to create.jsp
     @RequestMapping("/addUser")
     private String addUser(@RequestParam("registryName") String registryName, @RequestParam("registrySurname") String registrySurname, @RequestParam("registryPassword") String registryPassword, Model model) {
         //parameters from registry.jsp and creating new User();
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = bCryptPasswordEncoder.encode(registryPassword);
+       /* BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
+        String hashedPassword = bCryptPasswordEncoder.encode(registryPassword);*/
         User user = new User();
         user.setName(registryName);
         user.setSurname(registrySurname);
 //      user.setPassword(registryPassword);
-        user.setPassword(hashedPassword);
+        user.setPassword(passwordEncoder.encode(registryPassword));
         user.setStatus("user");
         //saving user to database
         userRepository.save(user);
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     //from login checking login data
-    @RequestMapping("/checkData")
+   /* @RequestMapping("/checkData")
     public String checkUser(HttpServletResponse response, @RequestParam("loginName") String loginName, @RequestParam("loginSurname") String loginSurname, @RequestParam("loginPassword") String loginPassword, Model model) {
         //adding all User to list for checkin user details
         List<User> userList = (List<User>) userRepository.findAll();
@@ -75,7 +75,7 @@ public class UserController {
         }
         log.log(Level.INFO, "Redirect to login");
         return "redirect:login";
-    }
+    }*/
 
     //from userMainContent changing password byUserName
     @RequestMapping("/changePassword")
@@ -102,13 +102,6 @@ public class UserController {
             return "redirect:changePasswordForm";
         }
         return "";
-    }
-
-    //from documentList to userMainContent
-    @RequestMapping("/goToMainContent")
-    public String goToMainContent() {
-        log.log(Level.INFO, "Go to main content");
-        return "userMainContent";
     }
 
     //from userMainContent by changing status to

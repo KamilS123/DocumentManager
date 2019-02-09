@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -64,9 +66,10 @@ public class DocumentController {
     public String documentEdition(Model model) {
         //all elements from document tatabase
         List<Document> documentList = (List<Document>) documentRepository.findAll();
-        model.addAttribute("documentList", documentList);
+        model.addAttribute("docNameToFind", documentList);
         log.log(Level.INFO, "Document show");
-        return "documentList";
+//        return "documentList";
+        return "userMainContent";
     }
 
     //from documentMenu to edit. User decided edit
@@ -113,6 +116,16 @@ public class DocumentController {
         List<Document>newListByName = documentRepository.findDocByName(docNameToFind);
         model.addAttribute("docNameToFind", newListByName);
         log.log(Level.INFO, "Find doc by name");
+        return "userMainContent";
+    }
+
+    @RequestMapping("/sortByName")
+    public String sortByName(Model model) {
+        List<Document>documents = documentRepository.findAll();
+
+        Collections.sort(documents, Comparator.comparing(Document::getdocument_name));
+//        Comparator<Document> documentComparator = (s1,s2)->s1.getdocument_name().compareTo(s2.getdocument_name());
+        model.addAttribute("docNameToFind",documents);
         return "userMainContent";
     }
 }

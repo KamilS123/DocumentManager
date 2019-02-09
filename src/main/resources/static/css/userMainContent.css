@@ -77,3 +77,14 @@
     font-weight: bold;
     background-color: gray;
 }
+#tableHeader th
+{
+    background-color: white;
+}
+#sortBtn input
+{
+    padding: 20px;
+    margin-left: 0px;
+    width: 20px;
+    height: 20px;
+}

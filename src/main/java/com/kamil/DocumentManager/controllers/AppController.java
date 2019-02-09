@@ -1,17 +1,13 @@
 package com.kamil.DocumentManager.controllers;
 
-import com.kamil.DocumentManager.models.Document;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
-import com.kamil.DocumentManager.service.DocumentService;
-import com.kamil.DocumentManager.serviceImpl.DocumentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,9 +27,14 @@ public class AppController {
     @Autowired
     private DocumentRepository documentRepository;
 
+    @RequestMapping("/")
+    public String goToLogin() {
+        return "login";
+    }
+
     //starting from /login and sending to login.jsp
     @RequestMapping("/login")
-    private String sendToLogin() {
+    public String sendToLogin() {
         log.log(Level.INFO, "Login");
         return "login";
     }
@@ -42,6 +43,24 @@ public class AppController {
     public String registration() {
         log.log(Level.INFO, "Registration");
         return "registry";
+    }
+
+    @RequestMapping("/logOut")
+    public String logOut(HttpServletRequest request) {
+        Cookie[]cookies = request.getCookies();
+        for(Cookie cook : cookies) {
+            if(cook.getName().equals("loginID")) {
+                cook.setMaxAge(0);
+            }
+        }
+        return "login";
+    }
+
+    //from documentList to userMainContent
+    @RequestMapping("/goToMainContent")
+    public String goToMainContent() {
+        log.log(Level.INFO, "Go to main content");
+        return "userMainContent";
     }
 
     //httpServletResquest zawiera informacje
