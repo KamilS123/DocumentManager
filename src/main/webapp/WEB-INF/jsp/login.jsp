@@ -1,5 +1,5 @@
 <head>
-    <title>Title</title>
+    <title>Login</title>
     <link rel="stylesheet" href="css/loginForm.css" type="text/css">
 </head>
 <style>

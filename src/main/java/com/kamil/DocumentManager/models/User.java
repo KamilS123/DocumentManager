@@ -1,10 +1,12 @@
 package com.kamil.DocumentManager.models;
-
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "user")
 @Entity
 public class User {
+    @Column(name = "user_id")
     @Id
     @GeneratedValue
     private Long id;
@@ -20,6 +22,17 @@ public class User {
 
     @Column(name = "status")
     private String status;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<Document> documentSet = new HashSet<>();
+
+    public Set<Document> getDocumentSet() {
+        return documentSet;
+    }
+
+    public void setDocumentSet(Set<Document> documentSet) {
+        this.documentSet = documentSet;
+    }
 
     public User() {
     }

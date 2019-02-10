@@ -6,4 +6,5 @@ import org.springframework.data.domain.Pageable;
 
 public interface DocumentService {
     Page<Document>findAllDocumentsPageable(Pageable pageable);
+    Document getDocById();
 }

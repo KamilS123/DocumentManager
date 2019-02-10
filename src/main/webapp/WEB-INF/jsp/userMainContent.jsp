@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Document</title>
+    <title>User main content</title>
     <link rel="stylesheet" type="text/css" href="css/userMainContent.css"/>
 </head>
 <style>
@@ -41,14 +41,6 @@
 
         <form method="post" action="/docMenuShow">
             <input type="submit" value="Edit/Delete"/>
-        </form>
-
-        <form>
-            <input type="submit" value="Review document"/>
-        </form>
-
-        <form>
-            <input type="submit" value="Download document"/>
         </form>
 
         <form>
@@ -96,6 +88,18 @@
                         <form method="post" action="/deleteDocument">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
                             <input type="submit" value="Delete"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="/viewDocument">
+                            <input type="hidden" name="docID" value="${element.getId()}"/>
+                            <input type="submit" value="View"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="post" action="/downloadDocument">
+                            <input type="hidden" name="docID" value="${element.getId()}"/>
+                            <input type="submit" value="Download"/>
                         </form>
                     </td>
                 </tr>

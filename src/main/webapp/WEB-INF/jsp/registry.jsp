@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Document</title>
+    <title>Registry</title>
     <link rel="stylesheet" type="text/css" href="css/register.css">
 </head>
 <style>

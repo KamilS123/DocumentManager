@@ -3,6 +3,8 @@ package com.kamil.DocumentManager.models;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "document")
@@ -10,6 +12,7 @@ public class Document {
 
     @Id
     @GeneratedValue
+    @Column(name = "document_id")
     private Long id;
 
     @Column(name = "document_name")
@@ -30,6 +33,18 @@ public class Document {
     @Column(name = "content")
     @Lob
     private byte[] content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Document() {
     }

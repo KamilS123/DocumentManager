@@ -1,5 +1,5 @@
 <head>
-    <title>Document</title>
+    <title>Edit document content</title>
     <link rel="stylesheet" type="text/css" href="css/editDocumentContent.css"/>
 </head>
 <body>

@@ -1,21 +1,29 @@
 package com.kamil.DocumentManager.controllers;
 
 import com.kamil.DocumentManager.models.Document;
+import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.hibernate.Session;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,6 +31,7 @@ import java.util.logging.Logger;
 @RequestMapping("/")
 public class DocumentController {
     private static final Logger log = Logger.getLogger(DocumentController.class.getName());
+
     @Autowired
     private UserRepository userRepository;
 
@@ -39,7 +48,11 @@ public class DocumentController {
 
     //catching details of new Document and saving them to database and going to userMainContent
     @RequestMapping("/selectDocument")
-    public String selectDocument(@RequestParam("choosenDocument")String choosenDocument, @RequestParam("documentName")String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) throws IOException {
+    public String selectDocument(Principal principal, @RequestParam("choosenDocument")String choosenDocument, @RequestParam("documentName")String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) throws IOException {
+        String name = principal.getName();
+        List<User>userList = (List<User>) userRepository.findAll();
+
+
         //getting direction of choosen file
         ClassPathResource uploadedFile = new ClassPathResource(choosenDocument);
         //showing file direction in console
@@ -55,6 +68,13 @@ public class DocumentController {
         uploadedDocument.setContent(arrayPic);
         uploadedDocument.setAdd_date();
         uploadedDocument.setEdition_date();
+
+        for (User user : userList) {
+            if (user.getName().equals(name)) {
+                uploadedDocument.setUser(user);
+            }
+        }
+
         //saving object to database by repository
         documentRepository.save(uploadedDocument);
         log.log(Level.INFO, "Select document");
@@ -63,12 +83,19 @@ public class DocumentController {
 
     //from userMainContent(menu) for editing choosen file. Sowing list with documents
     @RequestMapping("/docMenuShow")
-    public String documentEdition(Model model) {
+    public String documentEdition(Principal principal, Model model) {
+        Long id = 0L;
+        String name = principal.getName();
+        List<User>userList = (List<User>) userRepository.findAll();
+        for (User user : userList) {
+            if (user.getName().equals(name)) {
+                id = user.getId();
+            }
+        }
         //all elements from document tatabase
-        List<Document> documentList = (List<Document>) documentRepository.findAll();
+        List<Document>documentList = documentRepository.findByLoggedId(id);
         model.addAttribute("docNameToFind", documentList);
         log.log(Level.INFO, "Document show");
-//        return "documentList";
         return "userMainContent";
     }
 
@@ -112,9 +139,19 @@ public class DocumentController {
     }
 
     @RequestMapping("/findDocByName")
-    public String findDocByName(@RequestParam("docNameToFind") String docNameToFind, Model model) {
+    public String findDocByName(Principal principal, @RequestParam("docNameToFind") String docNameToFind, Model model) {
+        Long id = 0L;
+        String name = principal.getName();
+        List<User>userList = (List<User>) userRepository.findAll();
+        for (User user : userList) {
+            if (user.getName().equals(name)) {
+                id = user.getId();
+            }
+        }
+        //all elements from document tatabase
+        List<Document>documentList = documentRepository.findDocNameByLoggedId(id,docNameToFind);
         List<Document>newListByName = documentRepository.findDocByName(docNameToFind);
-        model.addAttribute("docNameToFind", newListByName);
+        model.addAttribute("docNameToFind", documentList);
         log.log(Level.INFO, "Find doc by name");
         return "userMainContent";
     }
@@ -128,4 +165,33 @@ public class DocumentController {
         model.addAttribute("docNameToFind",documents);
         return "userMainContent";
     }
+
+    //view document
+    @RequestMapping("/viewDocument")
+    public String viewDocument(@RequestParam("docID") Long id,Model model, HttpServletResponse response) throws UnsupportedEncodingException {
+        List<Document>documentList = (List<Document>) documentRepository.findAll();
+        String encodedObject = "";
+        for(Document document : documentList) {
+            if (document.getId()==id) {
+                byte[] encoded = Base64.getEncoder().encode(document.getContent());
+                encodedObject = new String(encoded,"utf-8");
+            }
+            model.addAttribute("userImage",encodedObject);
+        }
+        return "documentView";
+    }
+
+    //from userMainContent downloading document
+    /*@RequestMapping("/downloadDocument")
+    public void getFile(@RequestParam("docID") Long docID, HttpServletResponse response){
+        try {
+            DefaultResourceLoader loader = new DefaultResourceLoader();
+            InputStream is = new ByteArrayInputStream(documentRepository.);
+            IOUtils.copy(is, response.getOutputStream());
+            response.setHeader("Content-Disposition", "attachment; filename=Accepted.pdf");
+            response.flushBuffer();
+        } catch (IOException ex) {
+            throw new RuntimeException("IOError writing file to output stream");
+        }
+    }*/
 }

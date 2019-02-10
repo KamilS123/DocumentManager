@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Document</title>
+    <title>Create new document form</title>
     <link rel="stylesheet" type="text/css" href="css/createNewDocumentForms.css"/>
 </head>
 <style>

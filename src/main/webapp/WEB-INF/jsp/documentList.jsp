@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <head>
-    <title>Document</title>
+    <title>Document list</title>
     <link rel="stylesheet" type="text/css" href="css/documentsMenu.css"/>
 </head>
 <style>

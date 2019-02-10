@@ -22,5 +22,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Query("select d from Document d where d.document_name=:docName")
     List<Document> findDocByName(@Param("docName") String docName);
 
+    @Query("from Document d where d.user.id=:user_id AND d.document_name=:docName")
+    List<Document>findDocNameByLoggedId(@Param("user_id")Long user_id, @Param("docName") String name);
 
+    @Query("from Document d where d.user.id=:user_id")
+    List<Document>findByLoggedId(@Param("user_id")Long user_id);
 }

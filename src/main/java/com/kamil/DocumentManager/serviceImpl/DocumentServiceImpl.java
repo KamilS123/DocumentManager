@@ -17,4 +17,11 @@ public class DocumentServiceImpl implements DocumentService {
         Page<Document>documentPageLit = documentRepository.findAll(pageable);
         return documentPageLit;
     }
+
+    @Override
+    public Document getDocById() {
+        return null;
+    }
+
+
 }

@@ -32,8 +32,6 @@ public class UserController {
     PasswordEncoder passwordEncoder;
 
     private static final Logger log = Logger.getLogger(UserController.class.getName());
-//    private static final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
     //creating new user and sending to create.jsp
     @RequestMapping("/addUser")
     private String addUser(@RequestParam("registryName") String registryName, @RequestParam("registrySurname") String registrySurname, @RequestParam("registryPassword") String registryPassword, Model model) {
@@ -100,7 +98,6 @@ public class UserController {
         Long id = 0L;
         //getting logged user name
         String name = principal.getName();
-
         List<User>userList = (List<User>) userRepository.findAll();
         for (User user : userList) {
             if (user.getName().equals(name)) {
@@ -138,6 +135,7 @@ public class UserController {
     //from usemMainContent to chengepasswordForm for passing new Password details
     @RequestMapping("/changePasswordForm")
     public String changePasswordForm() {
+        log.log(Level.INFO, "sent to change password form");
         return "changePasswordForm";
     }
 }

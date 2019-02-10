@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-    <title>Document</title>
+    <title>Created user</title>
     <link rel="stylesheet" type="text/css" href="css/createdUsers.css"/>
 </head>
 <style>
