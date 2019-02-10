@@ -108,7 +108,7 @@ public class UserController {
         //passing id from for loop for changing status to admin
         userRepository.updateStatus("moderator", id);
         log.log(Level.INFO, "user updated to moderator");
-        return "userMainContent";
+        return "moderator/moderatorMainContent";
     }
 
     //grom UserMainContent by changing status to user. Go to userMainContent

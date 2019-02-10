@@ -150,19 +150,27 @@ public class DocumentController {
         }
         //all elements from document tatabase
         List<Document>documentList = documentRepository.findDocNameByLoggedId(id,docNameToFind);
-        List<Document>newListByName = documentRepository.findDocByName(docNameToFind);
+//        List<Document>newListByName = documentRepository.findDocByName(docNameToFind);
         model.addAttribute("docNameToFind", documentList);
         log.log(Level.INFO, "Find doc by name");
         return "userMainContent";
     }
 
     @RequestMapping("/sortByName")
-    public String sortByName(Model model) {
-        List<Document>documents = documentRepository.findAll();
-
-        Collections.sort(documents, Comparator.comparing(Document::getdocument_name));
+    public String sortByName(Principal principal,Model model) {
+        Long id = 0L;
+        String name = principal.getName();
+        List<User>userList = (List<User>) userRepository.findAll();
+        for (User user : userList) {
+            if (user.getName().equals(name)) {
+                id = user.getId();
+            }
+        }
+        //all elements from document tatabase
+        List<Document>documentList = documentRepository.findByLoggedId(id);
+        Collections.sort(documentList, Comparator.comparing(Document::getdocument_name));
 //        Comparator<Document> documentComparator = (s1,s2)->s1.getdocument_name().compareTo(s2.getdocument_name());
-        model.addAttribute("docNameToFind",documents);
+        model.addAttribute("docNameToFind",documentList);
         return "userMainContent";
     }
 
