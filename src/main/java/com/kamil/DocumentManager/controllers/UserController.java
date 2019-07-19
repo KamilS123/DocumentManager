@@ -1,6 +1,8 @@
 package com.kamil.DocumentManager.controllers;
 
+import com.kamil.DocumentManager.models.AdminMessage;
 import com.kamil.DocumentManager.models.User;
+import com.kamil.DocumentManager.repository.AdminMessageRepository;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class UserController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    AdminMessageRepository adminMessageRepository;
+
     private static final Logger log = Logger.getLogger(UserController.class.getName());
     //creating new user and sending to create.jsp
     @RequestMapping("/addUser")
@@ -40,6 +45,7 @@ public class UserController {
         user.setSurname(registrySurname);
         user.setPassword(passwordEncoder.encode(registryPassword));
         user.setStatus("user");
+        user.setActivationStatus("active");
         //saving user to database
         userRepository.save(user);
 
@@ -74,11 +80,10 @@ public class UserController {
 
     //from userMainContent by changing status to
     @RequestMapping("/changeStatusToAdmin")
-    public String changeStatusToAdmin(Principal principal, HttpServletRequest request) {
+    public String changeStatusToAdmin(Principal principal) {
         Long id = 0L;
         //getting logged user name
         String name = principal.getName();
-
         List<User>userList = (List<User>) userRepository.findAll();
         for (User user : userList) {
             if (user.getName().equals(name)) {
@@ -89,7 +94,7 @@ public class UserController {
         //passing id from for loop for changing status to admin
         userRepository.updateStatus("admin", id);
         log.log(Level.INFO, "user updated to admin");
-        return "userMainContent";
+        return "admin/adminMainContent";
     }
 
     //from userMainContent input by changing status to moderator to userMainContent
@@ -131,12 +136,29 @@ public class UserController {
         log.log(Level.INFO, "user updated to user");
         return "userMainContent";
     }
-
     //from usemMainContent to chengepasswordForm for passing new Password details
     @RequestMapping("/changePasswordForm")
     public String changePasswordForm() {
         log.log(Level.INFO, "sent to change password form");
         return "changePasswordForm";
+    }
+    @RequestMapping("/sendMessageToAdminForm")
+    public String sendMessageToAdmin() {
+        return "sendMessageToAdminForm";
+    }
+    @RequestMapping("/sendMessageToAdmin")
+    public String sendMessageToAdmin(@RequestParam("messageToAdmin")String message, Model model, Principal principal) {
+        AdminMessage adminMessage = new AdminMessage();
+        adminMessage.setMessage(message);
+        String loggedName = principal.getName();
+        List<User>userList = (List<User>) userRepository.findAll();
+        for(User u : userList) {
+            if(u.getName().equals(loggedName)) {
+                adminMessage.setUser(u);
+            }
+        }
+        adminMessageRepository.save(adminMessage);
+        return "userMainContent";
     }
 }
 

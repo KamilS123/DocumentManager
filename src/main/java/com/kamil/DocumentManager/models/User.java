@@ -23,8 +23,22 @@ public class User {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "activationStatus")
+    private String activationStatus;
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private Set<Document> documentSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private Set<AdminMessage> adminMessageSet;
+
+    public Set<AdminMessage> getAdminMessageSet() {
+        return adminMessageSet;
+    }
+
+    public void setAdminMessageSet(Set<AdminMessage> adminMessageSet) {
+        this.adminMessageSet = adminMessageSet;
+    }
 
     public Set<Document> getDocumentSet() {
         return documentSet;
@@ -37,11 +51,12 @@ public class User {
     public User() {
     }
 
-    public User(String name, String surname, String password, String status) {
+    public User(String name, String surname, String password, String status, String activationStatus) {
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.status = status;
+        this.activationStatus = activationStatus;
     }
 
     public Long getId() {
@@ -84,6 +99,14 @@ public class User {
         this.status = status;
     }
 
+    public String getActivationStatus() {
+        return activationStatus;
+    }
+
+    public void setActivationStatus(String activationStatus) {
+        this.activationStatus = activationStatus;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -92,6 +115,8 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 ", status='" + status + '\'' +
+                ", activationStatus='" + activationStatus + '\'' +
+                ", documentSet=" + documentSet +
                 '}';
     }
 }

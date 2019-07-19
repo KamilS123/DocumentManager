@@ -35,24 +35,23 @@
     <div id="mainContentMenu">
         <h3 id="mainContentMenuH3">MENU</h3>
 
-        <form method="post" action="/createNewDocument">
+        <form method="post" action="createNewDocument">
             <input type="submit" value="Add new document"/>
         </form>
 
-        <form method="post" action="/docMenuShow">
+        <form method="post" action="docMenuShow">
             <input type="submit" value="Edit/Delete"/>
         </form>
 
-        <form>
+        <form method="post" action="sendMessageToAdminForm">
             <input type="submit" value="Send message to admin"/>
         </form>
 
-        <form method="post" action="/changePasswordForm">
-            <%--<input type="hidden" value="${loginID}" name="loginID"/>--%>
+        <form method="post" action="changePasswordForm">
             <input type="submit" value="Change password"/>
         </form>
 
-        <form method="post" action="/logOut">
+        <form method="post" action="logOut">
             <input type="submit" value="Log out"/>
         </form>
     </div>
@@ -79,25 +78,25 @@
                     <td>${element.getAdd_date()}</td>
                     <td>${element.getEdition_date()}</td>
                     <td>
-                        <form method="post" action="/editDocFromList">
+                        <form method="post" action="editDocFromList">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
                             <input type="submit" value="Edit"/>
                         </form>
                     </td>
                     <td>
-                        <form method="post" action="/deleteDocument">
+                        <form method="post" action="deleteDocument">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
                             <input type="submit" value="Delete"/>
                         </form>
                     </td>
                     <td>
-                        <form method="post" action="/viewDocument">
+                        <form method="post" action="viewDocument">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
                             <input type="submit" value="View"/>
                         </form>
                     </td>
                     <td>
-                        <form method="post" action="/downloadDocument">
+                        <form method="post" action="downloadDocument">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
                             <input type="submit" value="Download"/>
                         </form>

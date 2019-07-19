@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>User main content</title>
+    <title>Admin main content</title>
     <link rel="stylesheet" type="text/css" href="css/userMainContent.css"/>
     <link rel="stylesheet" type="text/css" href="css/moderatorMainContent.css"/>
 </head>
@@ -56,12 +56,12 @@
         <form method="post" action="logOut">
             <input type="submit" value="Log out"/>
         </form>
-        <h3 class="mainContentMenuH3">Moderator MENU</h3>
+        <h3 class="mainContentMenuH3">Admin MENU</h3>
         <div id="moderatorMenu">
-            <form method="post" action="moderatorMainController">
-                <select id="moderatorMenuRadio" name="moderatorMenuRadio">
-                    <option value="ShowAllDocs" name="moderatorMenuRadio">Show all documents</option>
-                    <option value="ShowAllUsers" name="moderatorMenuRadio">Show all users with status(user)</option>
+            <form method="post" action="adminMainController">
+                <select id="adminMenuRadio" name="adminMenuRadio">
+                    <option value="showAllDocuments" name="adminMenuRadio">Show all documents</option>
+                    <option value="showAllUsers" name="adminMenuRadio">Show all users/moderators</option>
                 </select>
                 <input type="submit" value="Go to">
             </form>

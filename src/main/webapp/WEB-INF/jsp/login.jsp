@@ -16,7 +16,6 @@
 <div id="loginLogForm">
     <form method="post" action="/login">
         <input type="text" name="loginName" placeholder="Name">
-        <%--<input type="text" name="loginSurname" placeholder="Surname">--%>
         <input type="password" name="loginPassword" placeholder="Password">
         <input class="submit" type="submit" value="Sign in">
     </form>

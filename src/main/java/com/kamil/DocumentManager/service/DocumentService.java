@@ -1,10 +1,12 @@
 package com.kamil.DocumentManager.service;
 
 import com.kamil.DocumentManager.models.Document;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
+
+import java.io.FileNotFoundException;
+@Repository
 public interface DocumentService {
-    Page<Document>findAllDocumentsPageable(Pageable pageable);
-    Document getDocById();
+    Document getFile(Long fileId) throws FileNotFoundException;
 }
