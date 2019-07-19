@@ -31,6 +31,11 @@ public class AppController {
         log.log(Level.INFO, "Registration");
         return "registry";
     }
+    //from createdUser.jsp to login page
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
     //from allUsersTable to moderatorMainContent
     @RequestMapping("/moderatorMainContent")
     public String moderatorMainContent(Principal principal) {

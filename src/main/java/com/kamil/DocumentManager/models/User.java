@@ -11,10 +11,10 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
-    @Column(name = "surname")
+    @Column(name = "surname", unique = true)
     private String surname;
 
     @Column(name = "password")

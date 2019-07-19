@@ -6,6 +6,7 @@ import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.AdminMessageRepository;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
+import com.kamil.DocumentManager.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -24,20 +25,15 @@ public class AdminController {
     private AdminMessageRepository adminMessageRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private AdminService adminService;
 
     @RequestMapping("/adminMainController")
     public String adminMainController(@RequestParam("adminMenuRadio")String adminChoose) {
-        String declaredOption = "";
-        switch (adminChoose) {
-            case "showAllDocuments":
-                declaredOption = "showAllDocuments";
-                break;
-            case "showAllUsers":
-                declaredOption = "showAllUsers";
-                break;
-        }
-        return "redirect:" + declaredOption;
+        String redirection = adminService.adminRadioChoose(adminChoose);
+        return redirection;
     }
     @RequestMapping("/showAllDocuments")
     public String showAllDocuments(Model model) {
@@ -54,7 +50,6 @@ public class AdminController {
     @RequestMapping("/displayMessagesFromUsers")
     public String displayMessagesFromUsers(Model model) {
         List<AdminMessage>list = (List<AdminMessage>) adminMessageRepository.findAll();
-        list.forEach(System.out::println);
         model.addAttribute("listWithMessagesToAdmin",list);
         return "admin/listWithMessages";
     }

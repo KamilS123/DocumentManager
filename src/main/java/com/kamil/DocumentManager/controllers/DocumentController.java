@@ -145,7 +145,6 @@ public class DocumentController {
         Long id = userService.getLoggedUserId(principal);
         //all elements from document tatabase
         List<Document> documentList = documentRepository.findDocNameByLoggedId(id, docNameToFind);
-        //List<Document>newListByName = documentRepository.findDocByName(docNameToFind);
         model.addAttribute("docNameToFind", documentList);
         log.log(Level.INFO, "Find doc by name");
         return redirection;

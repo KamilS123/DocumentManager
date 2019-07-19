@@ -5,6 +5,7 @@ import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
 import com.kamil.DocumentManager.service.DocumentsService;
+import com.kamil.DocumentManager.service.ModeratorService;
 import com.kamil.DocumentManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/")
 public class ModeratorController {
     @Autowired
     private DocumentRepository documentRepository;
@@ -29,7 +29,7 @@ public class ModeratorController {
     private UserService userService;
 
     @Autowired
-    private DocumentsService documentsService;
+    private ModeratorService moderatorService;
 
     @RequestMapping("/findDocByNameModerator")
     public String findDocByNameModerator() {
@@ -39,16 +39,8 @@ public class ModeratorController {
     //grom userMainContent after changed status. Main controller for moderator. Sending to diffirent controllers.
     @RequestMapping("/moderatorMainController")
     public String moderatorMainController(@RequestParam("moderatorMenuRadio")String moderatorChoose) {
-        String option = "";
-        switch(moderatorChoose) {
-            case "showAllDocs":
-                option = "showAllDocs";
-                break;
-            case "showUsers":
-                option = "showUsers";
-                break;
-        }
-        return "redirect:" + option;
+        String choose = moderatorService.moderatorRadioChoose(moderatorChoose);
+        return choose;
     }
     //from moderatorMainController for display just user with user status because moderator can`t see admin details
     @RequestMapping("/showUsers")

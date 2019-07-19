@@ -5,6 +5,7 @@ import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.AdminMessageRepository;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
+import com.kamil.DocumentManager.service.AdminService;
 import com.kamil.DocumentManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,10 +36,10 @@ public class UserController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private AdminMessageRepository adminMessageRepository;
+    private UserService userService;
 
     @Autowired
-    private UserService userService;
+    private AdminService adminService;
 
     private static final Logger log = Logger.getLogger(UserController.class.getName());
     //creating new user and sending to create.jsp
@@ -65,82 +66,28 @@ public class UserController {
     //from userMainContent changing password byUserName
     @RequestMapping("/changePassword")
     public String changeUserPassword(Principal principal, @RequestParam("password") String password, @RequestParam("repeatPassword") String repeatPassword) {
-        String redirection = userService.checkUserStatus(principal);
-        if (password.equals(repeatPassword)) {
-            String name = principal.getName();
-            List<User> userList = (List<User>) userRepository.findAll();
-            for (User user : userList) {
-                if (user.getName().equals(name)) {
-                    userRepository.updatePassword(passwordEncoder.encode(password));
-                    log.log(Level.INFO, "password changed ");
-                    return redirection;
-                }
-            }
-        } else {
-            log.log(Level.INFO, "redirect to changePasswordForm ");
-            return "redirect:changePasswordForm";
-        }
-        return "";
+       String redirect = userService.changePassword(principal,password,repeatPassword);
+        return redirect;
     }
 
-    //from userMainContent by changing status to
-    @RequestMapping("/changeStatusToAdmin")
-    public String changeStatusToAdmin(Principal principal) {
-        Long id = 0L;
-        //getting logged user name
-        String name = principal.getName();
-        List<User>userList = (List<User>) userRepository.findAll();
-        for (User user : userList) {
-            if (user.getName().equals(name)) {
-                id = user.getId();
-                log.log(Level.INFO, "id passed by principal getName() ");
-            }
+    @RequestMapping("/changeStatus")
+    public String changeStatus(@RequestParam("changeStatusValue")String changeStatusValue, Principal principal) {
+        Long id = userService.getLoggedUserId(principal);
+        String status = "";
+        String redirecion = "";
+        switch (changeStatusValue) {
+            case "user": status = "user";redirecion = "userMainContent";
+            break;
+            case "moderator": status = "moderator";redirecion = "moderator/moderatorMainContent";
+            break;
+            case "admin": status = "admin"; redirecion = "admin/adminMainContent";
+            break;
         }
-        //passing id from for loop for changing status to admin
-        userRepository.updateStatus("admin", id);
-        log.log(Level.INFO, "user updated to admin");
-        return "admin/adminMainContent";
+        userRepository.updateStatus(status,id);
+        log.log(Level.INFO, "user updated to " + status);
+        return redirecion;
     }
 
-    //from userMainContent input by changing status to moderator to userMainContent
-    @RequestMapping("/changeStatusToModerator")
-    public String changeStatusToModerator(Principal principal) {
-        Long id = 0L;
-        //getting logged user name
-        String name = principal.getName();
-        List<User>userList = (List<User>) userRepository.findAll();
-        for (User user : userList) {
-            if (user.getName().equals(name)) {
-                id = user.getId();
-                log.log(Level.INFO, "id passed by principal getName() ");
-            }
-        }
-        //passing id from for loop for changing status to admin
-        userRepository.updateStatus("moderator", id);
-        log.log(Level.INFO, "user updated to moderator");
-        return "moderator/moderatorMainContent";
-    }
-
-    //grom UserMainContent by changing status to user. Go to userMainContent
-    @RequestMapping("/changeStatusToUser")
-    public String changeStatusToUser(Principal principal) {
-        //checking cookies. If cookie getName equals userID then pass cookie value to long id
-        Long id = 0L;
-        //getting logged user name
-        String name = principal.getName();
-
-        List<User>userList = (List<User>) userRepository.findAll();
-        for (User user : userList) {
-            if (user.getName().equals(name)) {
-                id = user.getId();
-                log.log(Level.INFO, "id passed by principal getName() user ");
-            }
-        }
-        //passing id from for loop for changing status to admin
-        userRepository.updateStatus("user", id);
-        log.log(Level.INFO, "user updated to user");
-        return "userMainContent";
-    }
     //from usemMainContent to chengepasswordForm for passing new Password details
     @RequestMapping("/changePasswordForm")
     public String changePasswordForm() {
@@ -152,18 +99,9 @@ public class UserController {
         return "sendMessageToAdminForm";
     }
     @RequestMapping("/sendMessageToAdmin")
-    public String sendMessageToAdmin(@RequestParam("messageToAdmin")String message, Model model, Principal principal) {
+    public String sendMessageToAdmin(@RequestParam("messageToAdmin")String message, Principal principal) {
         String redirection = userService.checkUserStatus(principal);
-        AdminMessage adminMessage = new AdminMessage();
-        adminMessage.setMessage(message);
-        String loggedName = principal.getName();
-        List<User>userList = (List<User>) userRepository.findAll();
-        for(User u : userList) {
-            if(u.getName().equals(loggedName)) {
-                adminMessage.setUser(u);
-            }
-        }
-        adminMessageRepository.save(adminMessage);
+        adminService.sendMessage(principal,message);
         return redirection;
     }
 }

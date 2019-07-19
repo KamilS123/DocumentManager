@@ -14,13 +14,16 @@
 <body>
 <div id="main">
     <div id="mainContentModeratorForm">
-        <form method="post" action="changeStatusToUser">
+        <form method="post" action="changeStatus">
+            <input type="hidden" name="changeStatusValue" value="user"/>
             <input type="submit" value="User"/>
         </form>
-        <form method="post" action="changeStatusToModerator">
+        <form method="post" action="changeStatus">
+            <input type="hidden" name="changeStatusValue" value="moderator"/>
             <input type="submit" value="Moderator"/>
         </form>
-        <form method="post" action="changeStatusToAdmin">
+        <form method="post" action="changeStatus">
+            <input type="hidden" name="changeStatusValue" value="admin"/>
             <input type="submit" value="Admin"/>
         </form>
     </div>
