@@ -5,6 +5,7 @@ import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.AdminMessageRepository;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
+import com.kamil.DocumentManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,10 +32,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    AdminMessageRepository adminMessageRepository;
+    private AdminMessageRepository adminMessageRepository;
+
+    @Autowired
+    private UserService userService;
 
     private static final Logger log = Logger.getLogger(UserController.class.getName());
     //creating new user and sending to create.jsp
@@ -61,6 +65,7 @@ public class UserController {
     //from userMainContent changing password byUserName
     @RequestMapping("/changePassword")
     public String changeUserPassword(Principal principal, @RequestParam("password") String password, @RequestParam("repeatPassword") String repeatPassword) {
+        String redirection = userService.checkUserStatus(principal);
         if (password.equals(repeatPassword)) {
             String name = principal.getName();
             List<User> userList = (List<User>) userRepository.findAll();
@@ -68,7 +73,7 @@ public class UserController {
                 if (user.getName().equals(name)) {
                     userRepository.updatePassword(passwordEncoder.encode(password));
                     log.log(Level.INFO, "password changed ");
-                    return "userMainContent";
+                    return redirection;
                 }
             }
         } else {
@@ -148,6 +153,7 @@ public class UserController {
     }
     @RequestMapping("/sendMessageToAdmin")
     public String sendMessageToAdmin(@RequestParam("messageToAdmin")String message, Model model, Principal principal) {
+        String redirection = userService.checkUserStatus(principal);
         AdminMessage adminMessage = new AdminMessage();
         adminMessage.setMessage(message);
         String loggedName = principal.getName();
@@ -158,7 +164,7 @@ public class UserController {
             }
         }
         adminMessageRepository.save(adminMessage);
-        return "userMainContent";
+        return redirection;
     }
 }
 

@@ -42,7 +42,7 @@
         </form>
 
         <form method="post" action="docMenuShow">
-            <input type="submit" value="Edit/Delete"/>
+            <input type="submit" value="Manage my collection"/>
         </form>
 
         <form method="post" action="sendMessageToAdminForm">
@@ -56,12 +56,12 @@
         <form method="post" action="logOut">
             <input type="submit" value="Log out"/>
         </form>
-        <h3 class="mainContentMenuH3">Moderator MENU</h3>
+        <h3 class="mainContentMenuH3">Mod MENU</h3>
         <div id="moderatorMenu">
             <form method="post" action="moderatorMainController">
                 <select id="moderatorMenuRadio" name="moderatorMenuRadio">
-                    <option value="ShowAllDocs" name="moderatorMenuRadio">Show all documents</option>
-                    <option value="ShowAllUsers" name="moderatorMenuRadio">Show all users with status(user)</option>
+                    <option value="showAllDocs" name="moderatorMenuRadio">Show all documents</option>
+                    <option value="showUsers" name="moderatorMenuRadio">Show all users with status(user)</option>
                 </select>
                 <input type="submit" value="Go to">
             </form>

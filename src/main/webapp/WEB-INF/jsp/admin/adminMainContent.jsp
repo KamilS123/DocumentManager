@@ -36,17 +36,16 @@
     <div id="mainContentMenu">
         <h3 class="mainContentMenuH3">MENU</h3>
 
-
         <form method="post" action="createNewDocument">
             <input type="submit" value="Add new document"/>
         </form>
 
         <form method="post" action="docMenuShow">
-            <input type="submit" value="Edit/Delete"/>
+            <input type="submit" value="Manage my collection"/>
         </form>
 
-        <form method="post" action="sendMessageToAdminForm">
-            <input type="submit" value="Send message to admin"/>
+        <form method="post" action="displayMessagesFromUsers">
+            <input type="submit" value="Display messages"/>
         </form>
 
         <form method="post" action="changePasswordForm">
@@ -61,7 +60,7 @@
             <form method="post" action="adminMainController">
                 <select id="adminMenuRadio" name="adminMenuRadio">
                     <option value="showAllDocuments" name="adminMenuRadio">Show all documents</option>
-                    <option value="showAllUsers" name="adminMenuRadio">Show all users/moderators</option>
+                    <option value="showAllUsers" name="adminMenuRadio">Show all users/moderators/admins</option>
                 </select>
                 <input type="submit" value="Go to">
             </form>

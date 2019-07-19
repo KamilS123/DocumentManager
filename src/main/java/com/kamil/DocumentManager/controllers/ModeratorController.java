@@ -4,13 +4,15 @@ import com.kamil.DocumentManager.models.Document;
 import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
+import com.kamil.DocumentManager.service.DocumentsService;
+import com.kamil.DocumentManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,10 +20,16 @@ import java.util.stream.Collectors;
 @RequestMapping("/")
 public class ModeratorController {
     @Autowired
-    DocumentRepository documentRepository;
+    private DocumentRepository documentRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private DocumentsService documentsService;
 
     @RequestMapping("/findDocByNameModerator")
     public String findDocByNameModerator() {
@@ -30,30 +38,28 @@ public class ModeratorController {
 
     //grom userMainContent after changed status. Main controller for moderator. Sending to diffirent controllers.
     @RequestMapping("/moderatorMainController")
-    public String moderatorMainController(@RequestParam("moderatorMenuRadio")String moderatorChoose, Model model) {
+    public String moderatorMainController(@RequestParam("moderatorMenuRadio")String moderatorChoose) {
         String option = "";
         switch(moderatorChoose) {
-            case "ShowAllDocs":
-                option = "ShowAllDocs";
+            case "showAllDocs":
+                option = "showAllDocs";
                 break;
-            case "ShowAllUsers":
-                option = "ShowAllUsers";
+            case "showUsers":
+                option = "showUsers";
                 break;
         }
         return "redirect:" + option;
     }
     //from moderatorMainController for display just user with user status because moderator can`t see admin details
-    @RequestMapping("/ShowAllUsers")
+    @RequestMapping("/showUsers")
     public String ShowAllUsers(Model model) {
-       List<User>allUserList = (List<User>) userRepository.findAll();
-       List<User>justUserStatusList = allUserList.stream()
-                .filter(s->s.getStatus().equals("user"))
-                .collect(Collectors.toList());
+        List<User> justUserStatusList = userService.getUsersWithStatusUser();
         model.addAttribute("userList",justUserStatusList);
-        return "moderator/allUsersTable";
+        return "allUsersTable";
     }
+
     //from moderatorMainController for display list with documentss for all users
-    @RequestMapping("/ShowAllDocs")
+    @RequestMapping("/showAllDocs")
     public String docMenuShowModerator(Model model) {
         List<Document> documentList = documentRepository.findAll();
         model.addAttribute("docNameToFind",documentList);
@@ -61,9 +67,11 @@ public class ModeratorController {
     }
     //from showAllDocs by moderatorMainController. Changing active or banned user
     @RequestMapping("/lockUnlock")
-    public String lockUnlock(@RequestParam("userID")Long userID) {
-        List<User>userList = (List<User>) userRepository.findAll();
+    public String lockUnlock(@RequestParam("userID")Long userID, Principal principal) {
+        String redirect = userService.checkUserStatus(principal);
+        String redirectTrack = "";
         String status = "";
+        List<User>userList = (List<User>) userRepository.findAll();
         for(User u : userList) {
             if (u.getId() == userID) {
                 if (u.getActivationStatus().equals("active")) {
@@ -74,6 +82,11 @@ public class ModeratorController {
             }
         }
         userRepository.updateActivationStatus(status,userID);
-        return "moderator/moderatorMainContent";
+        if (redirect.equals("moderator")) {
+            redirectTrack = "redirect:showUsers";
+        }else {
+            redirectTrack = "redirect:showAllUsers";
+        }
+        return redirectTrack;
     }
 }

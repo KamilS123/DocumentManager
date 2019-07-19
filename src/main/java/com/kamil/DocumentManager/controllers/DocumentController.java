@@ -5,17 +5,11 @@ import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
 import com.kamil.DocumentManager.service.DocumentService;
+import com.kamil.DocumentManager.service.UserService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.apache.tomcat.util.http.parser.MediaType;
-import org.hibernate.Session;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +37,10 @@ public class DocumentController {
     private DocumentRepository documentRepository;
 
     @Autowired
-    DocumentService documentService;
+    private UserService userService;
+
+    @Autowired
+    private DocumentService documentService;
 
     //from user main content to creatNewDocumentForm
     @RequestMapping("/createNewDocument")
@@ -55,6 +52,9 @@ public class DocumentController {
     //catching details of new Document and saving them to database and going to userMainContent
     @RequestMapping("/selectDocument")
     public String selectDocument(Principal principal, @RequestParam("choosenDocument") String choosenDocument, @RequestParam("documentName") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) throws IOException {
+        //prepare string with status of logged user
+        String redirection = userService.checkUserStatus(principal);
+
         String name = principal.getName();
         List<User> userList = (List<User>) userRepository.findAll();
         //getting direction of choosen file
@@ -80,25 +80,19 @@ public class DocumentController {
         //saving object to database by repository
         documentRepository.save(uploadedDocument);
         log.log(Level.INFO, "Select document");
-        return "userMainContent";
+        return redirection;
     }
 
-    //from userMainContent(menu) for editing choosen file. Sowing list with documents
+    //from userMainContent(menu) for editing choosen file. Showing list with documents
     @RequestMapping("/docMenuShow")
     public String documentEdition(Principal principal, Model model) {
-        Long id = 0L;
-        String name = principal.getName();
-        List<User> userList = (List<User>) userRepository.findAll();
-        for (User user : userList) {
-            if (user.getName().equals(name)) {
-                id = user.getId();
-            }
-        }
+        String redirection = userService.checkUserStatus(principal);
+        Long id = userService.getLoggedUserId(principal);
         //all elements from document tatabase
         List<Document> documentList = documentRepository.findByLoggedId(id);
         model.addAttribute("docNameToFind", documentList);
         log.log(Level.INFO, "Document show");
-        return "userMainContent";
+        return redirection;
     }
 
     //from documentMenu to edit. User decided edit
@@ -111,7 +105,8 @@ public class DocumentController {
 
     //from documentMenu. User decided delete document
     @RequestMapping("/deleteDocument")
-    public String editDocFromList(@RequestParam("docID") Long docID, Model model) {
+    public String editDocFromList(@RequestParam("docID") Long docID, Principal principal,Model model) {
+        String redirection = userService.checkUserStatus(principal);
         List<Document> documentsList = (List<Document>) documentRepository.findAll();
         //passed name is contained in documentsList, than delete
         for (Document document : documentsList) {
@@ -120,20 +115,24 @@ public class DocumentController {
             }
         }
         log.log(Level.INFO, "Delete document");
-        return "userMainContent";
+        model.addAttribute("docNameToFind",documentsList);
+//        return redirection;
+        return "redirect:docMenuShow";
     }
 
     //from editDocumentContent passing parameters to edit document
     @RequestMapping(value = "/saveEditedDocuments", method = RequestMethod.POST)
-    public String saveEditedDocuments(@RequestParam("docID") Long docID, @RequestParam("documentNameValue") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) {
-        //getting local time for updatind etition time
+    public String saveEditedDocuments(Principal principal, @RequestParam("docID") Long docID, @RequestParam("documentNameValue") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) {
+        //get local time and update edited time
         LocalDateTime localDateTime = LocalDateTime.now();
         List<Document> documentsList = (List<Document>) documentRepository.findAll();
         for (Document document : documentsList) {
             if (document.getId() == docID) {
                 documentRepository.updateDocument(documentName, documentComments, documentDescription, docID, localDateTime);
+//                model.addAttribute("docNameToFind",documentsList);
                 log.log(Level.INFO, "Save edited document");
-                return "userMainContent";
+//                return redirection;
+                return "redirect:docMenuShow";
             }
         }
         System.out.println("passed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + docID);
@@ -142,38 +141,26 @@ public class DocumentController {
 
     @RequestMapping("/findDocByName")
     public String findDocByName(Principal principal, @RequestParam("docNameToFind") String docNameToFind, Model model) {
-        Long id = 0L;
-        String name = principal.getName();
-        List<User> userList = (List<User>) userRepository.findAll();
-        for (User user : userList) {
-            if (user.getName().equals(name)) {
-                id = user.getId();
-            }
-        }
+        String redirection = userService.checkUserStatus(principal);
+        Long id = userService.getLoggedUserId(principal);
         //all elements from document tatabase
         List<Document> documentList = documentRepository.findDocNameByLoggedId(id, docNameToFind);
         //List<Document>newListByName = documentRepository.findDocByName(docNameToFind);
         model.addAttribute("docNameToFind", documentList);
         log.log(Level.INFO, "Find doc by name");
-        return "userMainContent";
+        return redirection;
     }
 
     @RequestMapping("/sortByName")
     public String sortByName(Principal principal, Model model) {
-        Long id = 0L;
-        String name = principal.getName();
-        List<User> userList = (List<User>) userRepository.findAll();
-        for (User user : userList) {
-            if (user.getName().equals(name)) {
-                id = user.getId();
-            }
-        }
+        String redirection = userService.checkUserStatus(principal);
+        Long id = userService.getLoggedUserId(principal);
         //all elements from document tatabase
         List<Document> documentList = documentRepository.findByLoggedId(id);
         Collections.sort(documentList, Comparator.comparing(Document::getdocument_name));
 //        Comparator<Document> documentComparator = (s1,s2)->s1.getdocument_name().compareTo(s2.getdocument_name());
         model.addAttribute("docNameToFind", documentList);
-        return "userMainContent";
+        return redirection;
     }
     //view document
     @RequestMapping("/viewDocument")

@@ -1,17 +1,23 @@
 package com.kamil.DocumentManager.controllers;
 
+import com.kamil.DocumentManager.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
 @Controller
 public class AppController {
+    @Autowired
+    private UserService userService;
+
     private static final Logger log = Logger.getLogger(AppController.class.getName());
 
     @RequestMapping("/")
@@ -19,12 +25,6 @@ public class AppController {
         return "login";
     }
 
-    //starting from /login and sending to login.jsp
-    @RequestMapping("/login")
-    public String sendToLogin() {
-        log.log(Level.INFO, "Login");
-        return "login";
-    }
     //from login sending to registry.jsp for creating new user
     @RequestMapping("/registry")
     public String registration() {
@@ -33,8 +33,9 @@ public class AppController {
     }
     //from allUsersTable to moderatorMainContent
     @RequestMapping("/moderatorMainContent")
-    public String moderatorMainContent() {
-        return "moderator/moderatorMainContent";
+    public String moderatorMainContent(Principal principal) {
+        String redirection = userService.checkUserStatus(principal);
+        return redirection;
     }
 
     @RequestMapping("/logOut")

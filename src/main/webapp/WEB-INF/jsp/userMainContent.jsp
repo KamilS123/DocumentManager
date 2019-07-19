@@ -40,7 +40,7 @@
         </form>
 
         <form method="post" action="docMenuShow">
-            <input type="submit" value="Edit/Delete"/>
+            <input type="submit" value="Manage my collection"/>
         </form>
 
         <form method="post" action="sendMessageToAdminForm">
