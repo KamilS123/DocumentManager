@@ -7,6 +7,7 @@ import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
 import com.kamil.DocumentManager.service.AdminService;
 import com.kamil.DocumentManager.service.UserService;
+import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -99,9 +100,9 @@ public class UserController {
         return "sendMessageToAdminForm";
     }
     @RequestMapping("/sendMessageToAdmin")
-    public String sendMessageToAdmin(@RequestParam("messageToAdmin")String message, Principal principal) {
+    public String sendMessageToAdmin(@RequestParam("messageToAdmin")String message, Principal principal) throws NotFoundException {
         String redirection = userService.checkUserStatus(principal);
-        adminService.sendMessage(principal,message);
+        adminService.sendMessage(message,principal);
         return redirection;
     }
 }

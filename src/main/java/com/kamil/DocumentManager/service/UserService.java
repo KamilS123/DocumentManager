@@ -46,7 +46,7 @@ public class UserService {
 
     //fetch logged user to get and return his id
     public Long getLoggedUserId(Principal principal) {
-        Long id = 0L;
+        Long id = 1L;
         String name = principal.getName();
         List<User> userList = (List<User>) userRepository.findAll();
         for (User user : userList) {
