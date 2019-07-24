@@ -31,7 +31,7 @@ public class AdminServiceTest {
     private AdminMessageRepository adminMessageRepository;
 
     @Test
-    public void should_return_redirect_to_showAllDocuments_passed_by_user(){
+    public void should_return_redirect_to_showAllDocuments_passed_by_user() {
         String passedData = "showAllDocuments";
         Assert.assertEquals("redirect:"+ passedData,adminService.adminRadioChoose(passedData));
     }
