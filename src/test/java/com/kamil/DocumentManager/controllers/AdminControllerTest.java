@@ -22,38 +22,29 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringRunner.class)
 @WebMvcTest(AdminController.class)
 public class AdminControllerTest {
-
-    @InjectMocks
-    private AdminController adminController;
 
     @Mock
     private AdminService adminService;
     @Autowired
     private MockMvc mockMvc;
-    @Test
-    public void shouldReturnExpectedText() throws Exception {
-        mockMvc
-                .perform(get("/hello"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hello!")));
-    }
+
     @Test
     public void adminMainController() throws Exception {
         String choose = "showAllDocuments";
         when(adminService.adminRadioChoose(choose)).thenReturn(choose);
         this.mockMvc.perform(get("/adminMainController"))
-                .andExpect(status().isOk());
-//                .andExpect(view().name("showAllDocuments"));
+                .andExpect(status().isOk())
+                .andExpect(view().name("showAllDocuments"));
     }
 
     @Test
