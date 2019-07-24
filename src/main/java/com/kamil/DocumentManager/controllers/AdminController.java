@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -29,6 +30,13 @@ public class AdminController {
 
     @Autowired
     private AdminService adminService;
+
+
+    @RequestMapping("/hello")
+    @ResponseBody
+    public String hello() {
+        return "Hello!";
+    }
 
     @RequestMapping("/adminMainController")
     public String adminMainController(@RequestParam("adminMenuRadio")String adminChoose) {
