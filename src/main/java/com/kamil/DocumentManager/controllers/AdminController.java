@@ -32,8 +32,7 @@ public class AdminController {
 
     @RequestMapping("/adminMainController")
     public String adminMainController(@RequestParam("adminMenuRadio")String adminChoose) {
-        String redirection = adminService.adminRadioChoose(adminChoose);
-        return redirection;
+        return adminService.adminRadioChoose(adminChoose);
     }
     @RequestMapping("/showAllDocuments")
     public String showAllDocuments(Model model) {

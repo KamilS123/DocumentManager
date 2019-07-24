@@ -4,9 +4,7 @@ package com.kamil.DocumentManager.service;
         import com.kamil.DocumentManager.models.User;
         import com.kamil.DocumentManager.repository.AdminMessageRepository;
         import com.kamil.DocumentManager.repository.UserRepository;
-        import javassist.NotFoundException;
         import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.security.core.context.SecurityContextHolder;
         import org.springframework.stereotype.Service;
 
         import java.security.Principal;
@@ -14,6 +12,7 @@ package com.kamil.DocumentManager.service;
 
 @Service
 public class AdminService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -32,7 +31,6 @@ public class AdminService {
                 break;
             default:
                 declaredOption = "default value";
-                System.out.println("default value");
                 break;
         }
         return "redirect:" + declaredOption;
