@@ -18,12 +18,12 @@
 		<java.version>1.8</java.version>
 	</properties>
 <dependencies>
-	<dependency>
-		<groupId>org.junit.jupiter</groupId>
-		<artifactId>junit-jupiter-engine</artifactId>
-		<version>5.3.1</version>
-		<scope>test</scope>
-	</dependency>
+	<!--<dependency>-->
+		<!--<groupId>org.junit.jupiter</groupId>-->
+		<!--<artifactId>junit-jupiter-engine</artifactId>-->
+		<!--<version>5.3.1</version>-->
+		<!--<scope>test</scope>-->
+	<!--</dependency>-->
 
 		<!--//do aplikacji webowych-->
 		<dependency>
@@ -37,13 +37,10 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
-		<!--łączy sie z baza danych h2-->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-jdbc</artifactId>
+	</dependency>
 		<!--do obsługi baz danych-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,7 +54,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!--do obslugi tomcata-->
+		<!--&lt;!&ndash;do obslugi tomcata&ndash;&gt;-->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
@@ -76,10 +73,10 @@
 		</dependency>
 
 		<!--obsługa taglibów-->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-taglibs</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.security</groupId>-->
+			<!--<artifactId>spring-security-taglibs</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
