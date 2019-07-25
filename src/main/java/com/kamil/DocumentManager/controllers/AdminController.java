@@ -55,7 +55,6 @@ public class AdminController {
     //grom listWithMessage by input. Delete adminMessage from databese by passed id and resend list with messages
     @RequestMapping("/deleteMessageFromUsers")
     public String deleteMessageFromUsers(@RequestParam("deleteMessageID")Long id, Model model) {
-        System.out.println(id);
         adminMessageRepository.deleteById(id);
         List<AdminMessage>list = (List<AdminMessage>) adminMessageRepository.findAll();
         model.addAttribute("listWithMessagesToAdmin",list);
