@@ -1,23 +1,23 @@
 package com.kamil.DocumentManager.controllers;
 
-import com.kamil.DocumentManager.models.AdminMessage;
-import com.kamil.DocumentManager.models.Document;
-import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.AdminMessageRepository;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
 import com.kamil.DocumentManager.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 public class AdminController {
+
+    private final Logger logger = Logger.getLogger(AdminController.class.getName());
+
     @Autowired
     private DocumentRepository documentRepository;
 
@@ -31,38 +31,45 @@ public class AdminController {
     private AdminService adminService;
 
     @RequestMapping("/adminMainController")
-    public String adminMainController(@RequestParam("adminMenuRadio")String adminChoose) {
+    public String adminMainController(@RequestParam("adminMenuRadio") String adminChoose) {
+        logger.log(Level.INFO, "adminMainController");
         return adminService.adminRadioChoose(adminChoose);
     }
+
     @RequestMapping("/showAllDocuments")
     public String showAllDocuments(Model model) {
-        List<Document>documentList = documentRepository.findAll();
-        model.addAttribute("docNameToFind",documentList);
+        model.addAttribute("docNameToFind", documentRepository.findAll());
+        logger.log(Level.INFO, "showAllDocuments");
         return "admin/adminMainContent";
     }
+
     @RequestMapping("/showAllUsers")
     public String showAllUsers(Model model) {
-        List<User>userList = (List<User>) userRepository.findAll();
-        model.addAttribute("userList",userList);
+        model.addAttribute("userList", userRepository.findAll());
+        logger.log(Level.INFO, "showAllUsers");
         return "allUsersTable";
     }
+
     @RequestMapping("/displayMessagesFromUsers")
     public String displayMessagesFromUsers(Model model) {
-        List<AdminMessage>list = (List<AdminMessage>) adminMessageRepository.findAll();
-        model.addAttribute("listWithMessagesToAdmin",list);
+        model.addAttribute("listWithMessagesToAdmin", adminMessageRepository.findAll());
+        logger.log(Level.INFO, "displayMessagesFromUsers");
         return "admin/listWithMessages";
     }
-    //grom listWithMessage by input. Delete adminMessage from databese by passed id and resend list with messages
+
+    //from listWithMessage by input. Delete adminMessage from databese by passed id and resend list with messages
     @RequestMapping("/deleteMessageFromUsers")
-    public String deleteMessageFromUsers(@RequestParam("deleteMessageID")Long id, Model model) {
+    public String deleteMessageFromUsers(@RequestParam("deleteMessageID") Long id, Model model) {
         adminMessageRepository.deleteById(id);
-        List<AdminMessage>list = (List<AdminMessage>) adminMessageRepository.findAll();
-        model.addAttribute("listWithMessagesToAdmin",list);
+        model.addAttribute("listWithMessagesToAdmin", adminMessageRepository.findAll());
+        logger.log(Level.INFO, "deleteMessageFromUsers");
         return "admin/listWithMessages";
     }
-    //grom listWithMessages redirection to adminMainContent
+
+    //from listWithMessages redirection to adminMainContent
     @RequestMapping("/displayAdminMainContent")
     public String displayAdminMainContent() {
+        logger.log(Level.INFO, "displayAdminMainContent");
         return "admin/adminMainContent";
     }
 

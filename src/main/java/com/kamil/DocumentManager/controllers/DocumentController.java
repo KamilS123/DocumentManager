@@ -1,16 +1,12 @@
 package com.kamil.DocumentManager.controllers;
 
 import com.kamil.DocumentManager.models.Document;
-import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.DocumentRepository;
-import com.kamil.DocumentManager.repository.UserRepository;
-import com.kamil.DocumentManager.service.DocumentService;
+import com.kamil.DocumentManager.service.DocumentsService;
 import com.kamil.DocumentManager.service.UserService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,18 +14,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Controller
-@RequestMapping("/")
 public class DocumentController {
-    private static final Logger log = Logger.getLogger(DocumentController.class.getName());
 
-    @Autowired
-    private UserRepository userRepository;
+    private static final Logger log = Logger.getLogger(DocumentController.class.getName());
 
     @Autowired
     private DocumentRepository documentRepository;
@@ -38,7 +30,7 @@ public class DocumentController {
     private UserService userService;
 
     @Autowired
-    private DocumentService documentService;
+    private DocumentsService documentsService;
 
     //from user main content to creatNewDocumentForm
     @RequestMapping("/createNewDocument")
@@ -49,48 +41,17 @@ public class DocumentController {
 
     //catching details of new Document and saving them to database and going to userMainContent
     @RequestMapping("/selectDocument")
-    public String selectDocument(Principal principal, @RequestParam("choosenDocument") String choosenDocument, @RequestParam("documentName") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) throws IOException {
-        //prepare string with status of logged user
-        String redirection = userService.checkUserStatus(principal);
-
-        String name = principal.getName();
-        List<User> userList = (List<User>) userRepository.findAll();
-        //getting direction of choosen file
-        ClassPathResource uploadedFile = new ClassPathResource(choosenDocument);
-        //showing file direction in console
-        System.out.println(choosenDocument);
-        //our object as byte[]
-        byte[] arrayPic = new byte[(int) uploadedFile.contentLength()];
-        uploadedFile.getInputStream().read(arrayPic);
-        //creating new object Document for adding to database
-        Document uploadedDocument = new Document();
-        uploadedDocument.setdocument_name(documentName);
-        uploadedDocument.setDocument_comments(documentComments);
-        uploadedDocument.setDocument_description(documentDescription);
-        uploadedDocument.setContent(arrayPic);
-        uploadedDocument.setAdd_date();
-        uploadedDocument.setEdition_date();
-        for (User user : userList) {
-            if (user.getName().equals(name)) {
-                uploadedDocument.setUser(user);
-            }
-        }
-        //saving object to database by repository
-        documentRepository.save(uploadedDocument);
+    public String saveDocumentToDatabase(Principal principal, @RequestParam("choosenDocument") String choosenDocument, @RequestParam("documentName") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments) throws IOException {
         log.log(Level.INFO, "Select document");
-        return redirection;
+        return documentsService.saveDocToDatabase(principal, choosenDocument, documentName, documentComments, documentDescription);
     }
 
     //from userMainContent(menu) for editing choosen file. Showing list with documents
     @RequestMapping("/docMenuShow")
-    public String documentEdition(Principal principal, Model model) {
-        String redirection = userService.checkUserStatus(principal);
-        Long id = userService.getLoggedUserId(principal);
-        //all elements from document tatabase
-        List<Document> documentList = documentRepository.findByLoggedId(id);
-        model.addAttribute("docNameToFind", documentList);
+    public String returnToCorrectMenuWithDocumentList(Principal principal, Model model) {
+        model.addAttribute("docNameToFind", documentsService.allDocsForLoggedId(principal));
         log.log(Level.INFO, "Document show");
-        return redirection;
+        return userService.checkUserStatus(principal);
     }
 
     //from documentMenu to edit. User decided edit
@@ -103,62 +64,33 @@ public class DocumentController {
 
     //from documentMenu. User decided delete document
     @RequestMapping("/deleteDocument")
-    public String editDocFromList(@RequestParam("docID") Long docID, Principal principal,Model model) {
-        String redirection = userService.checkUserStatus(principal);
-        List<Document> documentsList = (List<Document>) documentRepository.findAll();
-        //passed name is contained in documentsList, than delete
-        for (Document document : documentsList) {
-            if (document.getId() == docID) {
-                documentRepository.delete(document);
-            }
-        }
-        log.log(Level.INFO, "Delete document");
-        model.addAttribute("docNameToFind",documentsList);
-//        return redirection;
+    public String deleteDocument(@RequestParam("docID") Long docID) {
+        documentsService.deleteDocumentById(docID);
+        log.log(Level.INFO, "Edit doc from list");
         return "redirect:docMenuShow";
     }
 
     //from editDocumentContent passing parameters to edit document
     @RequestMapping(value = "/saveEditedDocuments", method = RequestMethod.POST)
-    public String saveEditedDocuments(Principal principal, @RequestParam("docID") Long docID, @RequestParam("documentNameValue") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments, Model model) {
-        //get local time and update edited time
-        LocalDateTime localDateTime = LocalDateTime.now();
-        List<Document> documentsList = (List<Document>) documentRepository.findAll();
-        for (Document document : documentsList) {
-            if (document.getId() == docID) {
-                documentRepository.updateDocument(documentName, documentComments, documentDescription, docID, localDateTime);
-//                model.addAttribute("docNameToFind",documentsList);
-                log.log(Level.INFO, "Save edited document");
-//                return redirection;
-                return "redirect:docMenuShow";
-            }
-        }
-        System.out.println("passed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + docID);
-        return "saved";
+    public String saveEditedDocuments(@RequestParam("docID") Long docID, @RequestParam("documentNameValue") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments) {
+        log.log(Level.INFO, "Save Edited Documents");
+        return documentsService.saveEditedDoc(docID, documentComments, documentName, documentDescription);
     }
 
     @RequestMapping("/findDocByName")
     public String findDocByName(Principal principal, @RequestParam("docNameToFind") String docNameToFind, Model model) {
-        String redirection = userService.checkUserStatus(principal);
-        Long id = userService.getLoggedUserId(principal);
-        //all elements from document tatabase
-        List<Document> documentList = documentRepository.findDocNameByLoggedId(id, docNameToFind);
-        model.addAttribute("docNameToFind", documentList);
+        model.addAttribute("docNameToFind", documentsService.findDocByName(principal, docNameToFind));
         log.log(Level.INFO, "Find doc by name");
-        return redirection;
+        return userService.checkUserStatus(principal);
     }
 
     @RequestMapping("/sortByName")
     public String sortByName(Principal principal, Model model) {
-        String redirection = userService.checkUserStatus(principal);
-        Long id = userService.getLoggedUserId(principal);
-        //all elements from document tatabase
-        List<Document> documentList = documentRepository.findByLoggedId(id);
-        Collections.sort(documentList, Comparator.comparing(Document::getdocument_name));
-//        Comparator<Document> documentComparator = (s1,s2)->s1.getdocument_name().compareTo(s2.getdocument_name());
-        model.addAttribute("docNameToFind", documentList);
-        return redirection;
+        model.addAttribute("docNameToFind", documentsService.sortDocuments(principal));
+        log.log(Level.INFO, "Find doc by name");
+        return userService.checkUserStatus(principal);
     }
+
     //view document
     @RequestMapping("/viewDocument")
     public String viewDocument(@RequestParam("docID") Long id, Model model, HttpServletResponse response) throws UnsupportedEncodingException {
@@ -177,10 +109,10 @@ public class DocumentController {
     //from userMainContent downloading document
     @RequestMapping("/downloadDocument")
     @ResponseBody
-    public DefaultResourceLoader getFile(@RequestParam("docID") Long docID, HttpServletResponse response){
+    public DefaultResourceLoader getFile(@RequestParam("docID") Long docID, HttpServletResponse response) {
         DefaultResourceLoader loader = new DefaultResourceLoader();
         try {
-            InputStream is = new ByteArrayInputStream(documentService.getFile(docID).getContent());
+            InputStream is = new ByteArrayInputStream(documentsService.getFile(docID).getContent());
             IOUtils.copy(is, response.getOutputStream());
             response.setHeader("Content-Disposition", "attachment; filename=Accepted.pdf");
             response.flushBuffer();

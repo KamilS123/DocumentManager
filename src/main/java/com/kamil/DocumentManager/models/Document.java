@@ -95,8 +95,7 @@ public class Document {
     }
 
     public void setAdd_date() {
-       LocalDateTime add_date = LocalDateTime.now();
-        this.add_date = add_date;
+        this.add_date = LocalDateTime.now();
     }
 
     public LocalDateTime getEdition_date() {
@@ -104,8 +103,7 @@ public class Document {
     }
 
     public void setEdition_date() {
-        LocalDateTime edition_date = LocalDateTime.now();
-       this.edition_date = edition_date;
+        this.edition_date = LocalDateTime.now();
     }
 
     public byte[] getContent() {

@@ -31,26 +31,30 @@ public class AppController {
         log.log(Level.INFO, "Registration");
         return "registry";
     }
+
     //from createdUser.jsp to login page
     @RequestMapping("/login")
     public String login() {
+        log.log(Level.INFO, "login");
         return "login";
     }
+
     //from allUsersTable to moderatorMainContent
     @RequestMapping("/moderatorMainContent")
     public String moderatorMainContent(Principal principal) {
-        String redirection = userService.checkUserStatus(principal);
-        return redirection;
+        log.log(Level.INFO, "moderatorMainContent");
+        return userService.checkUserStatus(principal);
     }
 
     @RequestMapping("/logOut")
     public String logOut(HttpServletRequest request) {
-        Cookie[]cookies = request.getCookies();
-        for(Cookie cook : cookies) {
-            if(cook.getName().equals("loginID")) {
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cook : cookies) {
+            if (cook.getName().equals("loginID")) {
                 cook.setMaxAge(0);
             }
         }
+        log.log(Level.INFO, "logOut");
         return "login";
     }
 
@@ -68,6 +72,7 @@ public class AppController {
         String browserName = request.getHeader("User-Agent");
         String id = request.getRemoteAddr();
         log.log(Level.INFO, "Browser info,, Id info");
+        log.log(Level.INFO, "Go to main content");
         return browserName + " ...... " + id;
     }
 }

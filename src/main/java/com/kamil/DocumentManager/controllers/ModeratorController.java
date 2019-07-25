@@ -1,10 +1,7 @@
 package com.kamil.DocumentManager.controllers;
 
-import com.kamil.DocumentManager.models.Document;
-import com.kamil.DocumentManager.models.User;
 import com.kamil.DocumentManager.repository.DocumentRepository;
 import com.kamil.DocumentManager.repository.UserRepository;
-import com.kamil.DocumentManager.service.DocumentsService;
 import com.kamil.DocumentManager.service.ModeratorService;
 import com.kamil.DocumentManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 public class ModeratorController {
-    @Autowired
-    private DocumentRepository documentRepository;
+
+    private final Logger logger = Logger.getLogger(ModeratorController.class.getName());
 
     @Autowired
-    private UserRepository userRepository;
+    private DocumentRepository documentRepository;
 
     @Autowired
     private UserService userService;
@@ -33,52 +30,36 @@ public class ModeratorController {
 
     @RequestMapping("/findDocByNameModerator")
     public String findDocByNameModerator() {
+        logger.log(Level.INFO,"findDocByNameModerator");
         return "moderatorMainContent";
     }
 
-    //grom userMainContent after changed status. Main controller for moderator. Sending to diffirent controllers.
+    //from userMainContent after changed status. Main controller for moderator. Sending to diffirent controllers.
     @RequestMapping("/moderatorMainController")
     public String moderatorMainController(@RequestParam("moderatorMenuRadio")String moderatorChoose) {
         String choose = moderatorService.moderatorRadioChoose(moderatorChoose);
+        logger.log(Level.INFO,"moderatorMainController");
         return choose;
     }
     //from moderatorMainController for display just user with user status because moderator can`t see admin details
     @RequestMapping("/showUsers")
     public String ShowAllUsers(Model model) {
-        List<User> justUserStatusList = userService.getUsersWithStatusUser();
-        model.addAttribute("userList",justUserStatusList);
+        model.addAttribute("userList",userService.getUsersWithStatusUser());
+        logger.log(Level.INFO,"showUsers");
         return "allUsersTable";
     }
 
     //from moderatorMainController for display list with documentss for all users
     @RequestMapping("/showAllDocs")
     public String docMenuShowModerator(Model model) {
-        List<Document> documentList = documentRepository.findAll();
-        model.addAttribute("docNameToFind",documentList);
+        model.addAttribute("docNameToFind",documentRepository.findAll());
+        logger.log(Level.INFO,"showAllDocs");
         return "moderator/moderatorMainContent";
     }
     //from showAllDocs by moderatorMainController. Changing active or banned user
     @RequestMapping("/lockUnlock")
     public String lockUnlock(@RequestParam("userID")Long userID, Principal principal) {
-        String redirect = userService.checkUserStatus(principal);
-        String redirectTrack = "";
-        String status = "";
-        List<User>userList = (List<User>) userRepository.findAll();
-        for(User u : userList) {
-            if (u.getId() == userID) {
-                if (u.getActivationStatus().equals("active")) {
-                    status = "banned";
-                } else if (u.getActivationStatus().equals("banned")) {
-                    status = "active";
-                }
-            }
-        }
-        userRepository.updateActivationStatus(status,userID);
-        if (redirect.equals("moderator")) {
-            redirectTrack = "redirect:showUsers";
-        }else {
-            redirectTrack = "redirect:showAllUsers";
-        }
-        return redirectTrack;
+        logger.log(Level.INFO,"lockUnlock");
+        return moderatorService.lockOrUnockUser(principal,userID);
     }
 }
