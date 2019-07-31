@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>User main content</title>
-    <link rel="stylesheet" type="text/css" href="css/userMainContent.css"/>
+    <link rel="stylesheet" type="text/css" href="css/userContent.css"/>
     <link rel="stylesheet" type="text/css" href="css/moderatorMainContent.css"/>
 </head>
 <style>

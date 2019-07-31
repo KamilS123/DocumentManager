@@ -20,7 +20,7 @@
     text-align: center;
 }
 
-#mainContentMenuH3 {
+.mainContentMenuH3 {
     color: white;
     font-size: 35px;
     font-weight: bold;
@@ -90,4 +90,17 @@
 {
     width: 120px;
     height: 30px;
+}
+#moderatorMenuRadio
+{
+    width: 300px;
+    height: 30px;
+    font-size:20px;
+    margin-bottom: 15px;
+}
+#adminMenuRadio {
+    width: 300px;
+    height: 30px;
+    font-size:20px;
+    margin-bottom: 15px;
 }

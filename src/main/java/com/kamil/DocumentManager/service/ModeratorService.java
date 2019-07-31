@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @Service
 public class ModeratorService {
 
-    Logger logger = Logger.getLogger(ModeratorService.class.getName());
+    private final Logger logger = Logger.getLogger(ModeratorService.class.getName());
 
     @Autowired
     private UserRepository userRepository;
