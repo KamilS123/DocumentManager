@@ -16,13 +16,13 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     @Modifying
     @Transactional(readOnly = false)
-    @Query(value = "update Document d set d.document_name=:docName, d.document_comments=:docCom, d.document_description=:docDesc, d.edition_date=:editDate where d.id=:docID")
+    @Query(value = "update Document d set d.documentName=:docName, d.documentComments=:docCom, d.documentDescription=:docDesc, d.editionDate=:editDate where d.id=:docID")
     void updateDocument(@Param("docName") String docName, @Param("docCom") String docCom, @Param("docDesc") String docDesc, @Param("editDate") LocalDateTime date);
 
-    @Query("select d from Document d where d.document_name=:docName")
+    @Query("select d from Document d where d.documentName=:docName")
     List<Document> findDocByName(@Param("docName") String docName);
 
-    @Query("from Document d where d.user.id=:user_id AND d.document_name=:docName")
+    @Query("from Document d where d.user.id=:user_id AND d.documentName=:docName")
     List<Document>findDocNameByLoggedId(@Param("user_id")Long user_id, @Param("docName") String name);
 
     @Query("from Document d where d.user.id=:user_id")

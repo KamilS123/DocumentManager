@@ -13,8 +13,7 @@
 <link rel="stylesheet" href="css/changePasswordForm.css"/>
 <body>
 <style>
-    body
-    {
+    body {
         background-image: url("img/middle.jpg");
         background-size: cover;
     }

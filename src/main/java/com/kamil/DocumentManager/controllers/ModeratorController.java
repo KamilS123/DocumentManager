@@ -1,7 +1,6 @@
 package com.kamil.DocumentManager.controllers;
 
 import com.kamil.DocumentManager.repository.DocumentRepository;
-import com.kamil.DocumentManager.repository.UserRepository;
 import com.kamil.DocumentManager.service.ModeratorService;
 import com.kamil.DocumentManager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

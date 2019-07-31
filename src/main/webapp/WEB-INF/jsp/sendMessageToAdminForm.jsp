@@ -9,11 +9,20 @@
 <html>
 <head>
     <title>Send Message To Admin</title>
+    <link rel="stylesheet" href="css/messageToAdmin.css" type="text/css">
 </head>
 <body>
+<style>
+    body {
+        background-image: url("img/middle.jpg");
+        background-size: cover;
+    }
+</style>
+<div id = "formForMessage">
 <form method="post" action="sendMessageToAdmin">
     <input type="text" name="messageToAdmin">
     <input type="submit" value="Send">
 </form>
+</div>
 </body>
 </html>

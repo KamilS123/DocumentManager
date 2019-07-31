@@ -24,11 +24,11 @@
     </tr>
     <c:forEach var="element" items="${documentList}">
         <tr>
-            <td>${element.getdocument_name()}</td>
-            <td>${element.getDocument_description()}</td>
-            <td>${element.getDocument_comments()}</td>
-            <td>${element.getAdd_date()}</td>
-            <td>${element.getEdition_date()}</td>
+            <td>${element.getDocumentDescription()}</td>
+            <td>${element.getDocumentDescription()}</td>
+            <td>${element.getDocumentComment()}</td>
+            <td>${element.getAdditionDate()}</td>
+            <td>${element.getEditionDate()}</td>
             <td>
                 <form method="post" action="/editDocFromList">
                     <input type="hidden" name="docID" value="${element.getId()}"/>
@@ -44,7 +44,7 @@
         </tr>
     </c:forEach>
     <form id="goToMenuBtn" method="post" action="/goToMainContent">
-        <input  type="submit" value="Go to menu">
+        <input type="submit" value="Go to menu">
     </form>
 </table>
 

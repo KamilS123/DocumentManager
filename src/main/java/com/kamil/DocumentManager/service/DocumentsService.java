@@ -43,8 +43,8 @@ public class DocumentsService {
             id = userService.getLoggedUserId(principal);
             //all elements from document tatabase
             documentList = documentRepository.findByLoggedId(id);
-            Collections.sort(documentList, Comparator.comparing(Document::getdocument_name));
-//        Comparator<Document> documentComparator = (s1,s2)->s1.getdocument_name().compareTo(s2.getdocument_name());
+            Collections.sort(documentList, Comparator.comparing(Document::getDocumentName));
+//        Comparator<Document> documentComparator = (s1,s2)->s1.getdocumentName().compareTo(s2.getdocumentName());
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
             System.out.println();
@@ -84,10 +84,10 @@ public class DocumentsService {
     public String saveEditedDoc(Long docID, String documentComments, String documentName, String documentDescription) {
         try {
             Document document = (Document) getDocumentById(docID);
-            document.setdocument_name(documentName);
-            document.setDocument_description(documentDescription);
-            document.setDocument_comments(documentComments);
-            document.setEdition_date();
+            document.setDocumentName(documentName);
+            document.setDocumentDescription(documentDescription);
+            document.setDocumentComment(documentComments);
+            document.setEditionDate();
             documentRepository.save(document);
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
@@ -110,12 +110,12 @@ public class DocumentsService {
             uploadedFile.getInputStream().read(arrayPic);
             //creating new object Document for adding to database
             Document uploadedDocument = new Document();
-            uploadedDocument.setdocument_name(documentName);
-            uploadedDocument.setDocument_comments(documentComments);
-            uploadedDocument.setDocument_description(documentDescription);
+            uploadedDocument.setDocumentName(documentName);
+            uploadedDocument.setDocumentComment(documentComments);
+            uploadedDocument.setDocumentDescription(documentDescription);
             uploadedDocument.setContent(arrayPic);
-            uploadedDocument.setAdd_date();
-            uploadedDocument.setEdition_date();
+            uploadedDocument.setAdditionDate();
+            uploadedDocument.setEditionDate();
             for (User user : userList) {
                 if (user.getName().equals(name)) {
                     uploadedDocument.setUser(user);

@@ -1,0 +1,18 @@
+#tab {
+    width: 900px;
+    margin: 200px auto auto auto;
+}
+
+table th {
+    font-size: 35px;
+    padding: 20px;
+    background-color: white;
+}
+
+table td {
+    font-size: 25px;
+    font-weight: bolder;
+}
+table tr{
+    margin-right: 10px;
+}

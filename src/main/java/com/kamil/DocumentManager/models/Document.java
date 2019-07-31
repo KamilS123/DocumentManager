@@ -2,10 +2,7 @@ package com.kamil.DocumentManager.models;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "document")
@@ -16,20 +13,20 @@ public class Document {
     @Column(name = "document_id")
     private Long id;
 
-    @Column(name = "document_name")
-    private String document_name;
+    @Column(name = "documentName")
+    private String documentName;
 
-    @Column(name = "document_description")
-    private String document_description;
+    @Column(name = "documentDescription")
+    private String documentDescription;
 
-    @Column(name = "document_comments")
-    private String document_comments;
+    @Column(name = "documentComments")
+    private String documentComments;
 
-    @Column(name = "add_date")
-    private LocalDateTime add_date;
+    @Column(name = "additionDate")
+    private LocalDateTime additionDate;
 
-    @Column(name = "edition_date")
-    private LocalDateTime edition_date;
+    @Column(name = "editionDate")
+    private LocalDateTime editionDate;
 
     @Column(name = "content")
     @Lob
@@ -50,12 +47,12 @@ public class Document {
     public Document() {
     }
 
-    public Document(String document_name, String document_description, String document_comments, LocalDateTime add_date, LocalDateTime edition_date, byte[] content) {
-        this.document_name = document_name;
-        this.document_description = document_description;
-        this.document_comments = document_comments;
-        this.add_date = add_date;
-        this.edition_date = edition_date;
+    public Document(String documentName, String documentDescription, String documentComments, LocalDateTime additionDate, LocalDateTime editionDate, byte[] content) {
+        this.documentName = documentName;
+        this.documentDescription = documentDescription;
+        this.documentComments = documentComments;
+        this.additionDate = additionDate;
+        this.editionDate = editionDate;
         this.content = content;
     }
 
@@ -67,44 +64,44 @@ public class Document {
         this.id = id;
     }
 
-    public String getdocument_name() {
-        return document_name;
+    public String getDocumentName() {
+        return documentName;
     }
 
-    public void setdocument_name(String document_name) {
-        this.document_name = document_name;
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 
-    public String getDocument_description() {
-        return document_description;
+    public String getDocumentDescription() {
+        return documentDescription;
     }
 
-    public void setDocument_description(String document_description) {
-        this.document_description = document_description;
+    public void setDocumentDescription(String documentDescription) {
+        this.documentDescription = documentDescription;
     }
 
-    public String getDocument_comments() {
-        return document_comments;
+    public String getDocumentComment() {
+        return documentComments;
     }
 
-    public void setDocument_comments(String document_comments) {
-        this.document_comments = document_comments;
+    public void setDocumentComment(String documentComments) {
+        this.documentComments = documentComments;
     }
 
-    public LocalDateTime getAdd_date() {
-        return add_date;
+    public LocalDateTime getAdditionDate() {
+        return additionDate;
     }
 
-    public void setAdd_date() {
-        this.add_date = LocalDateTime.now();
+    public void setAdditionDate() {
+        this.additionDate = LocalDateTime.now();
     }
 
-    public LocalDateTime getEdition_date() {
-        return edition_date;
+    public LocalDateTime getEditionDate() {
+        return editionDate;
     }
 
-    public void setEdition_date() {
-        this.edition_date = LocalDateTime.now();
+    public void setEditionDate() {
+        this.editionDate = LocalDateTime.now();
     }
 
     public byte[] getContent() {
@@ -119,11 +116,11 @@ public class Document {
     public String toString() {
         return "Document{" +
                 "id=" + id +
-                ", document_name='" + document_name + '\'' +
-                ", document_description='" + document_description + '\'' +
-                ", document_comments='" + document_comments + '\'' +
-                ", add_date=" + add_date +
-                ", edition_date=" + edition_date +
+                ", documentName='" + documentName + '\'' +
+                ", documentDescription='" + documentDescription + '\'' +
+                ", documentComments='" + documentComments + '\'' +
+                ", additionDate=" + additionDate +
+                ", editionDate=" + editionDate +
                 ", content=" + content +
                 '}';
     }

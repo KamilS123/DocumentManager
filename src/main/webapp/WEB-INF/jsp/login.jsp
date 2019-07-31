@@ -8,46 +8,6 @@
         background-image: url("img/middle.jpg");
         background-size: cover;
     }
-
-    /*#loginHeader {*/
-        /*margin: 20px auto auto auto;*/
-        /*padding: 30px;*/
-        /*text-align: center;*/
-        /*font-size: 30px;*/
-        /*font-weight: bold;*/
-        /*color: white;*/
-        /*border-bottom: 5px solid white;*/
-    /*}*/
-
-    /*#loginLogForm {*/
-        /*border: 4px solid black;*/
-        /*width: 300px;*/
-        /*height: 300px;*/
-        /*margin: 50px auto 0 auto;*/
-    /*}*/
-
-    /*#loginLogForm form {*/
-        /*text-align: center;*/
-    /*}*/
-
-    /*#loginLogForm form input {*/
-        /*width: 250px;*/
-        /*height: 40px;*/
-        /*padding: 10px;*/
-        /*margin-top: 10px;*/
-        /*border-radius: 3px;*/
-    /*}*/
-    /*.submit*/
-    /*{*/
-        /*background-color: black;*/
-        /*color: white;*/
-        /*font-size: 20px;*/
-    /*}*/
-    /*.submit:hover*/
-    /*{*/
-        /*background-color: gray;*/
-        /*color: white;*/
-    /*}*/
 </style>
 <body>
 <div id="loginHeader">

@@ -125,8 +125,8 @@ public class DocumentController {
     public ResponseEntity<Resource>downloadFile(@RequestParam("docID")Long docID) throws FileNotFoundException {
         Document document = documentService.getFile(docID);
         return ResponseEntity.ok()
-//                .contentType(MediaType.parseMediaType(document.getdocument_name()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment filename=\""+document.getdocument_name()+"\"")
+//                .contentType(MediaType.parseMediaType(document.getdocumentName()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment filename=\""+document.getdocumentName()+"\"")
                 .body(new ByteArrayResource(document.getContent()));
     }*/
 }
