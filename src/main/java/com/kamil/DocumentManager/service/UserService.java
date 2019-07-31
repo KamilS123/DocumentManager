@@ -85,7 +85,7 @@ public class UserService {
         return redirection;
     }
 
-    public void saveNewUser(@RequestParam("registryName") String registryName, @RequestParam("registrySurname") String registrySurname, @RequestParam("registryPassword") String registryPassword) {
+    public void saveNewUser(String registryName, String registrySurname, String registryPassword) {
         try {
             User user = new User();
             user.setName(registryName);

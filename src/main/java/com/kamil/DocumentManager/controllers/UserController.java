@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +28,7 @@ public class UserController {
 
     //creating new user and sending to create.jsp
     @RequestMapping("/addUser")
-    private String addUser(@RequestParam("registryName") String registryName, @RequestParam("registrySurname") String registrySurname, @RequestParam("registryPassword") String registryPassword, Model model) {
+    private String addUser(@Valid @RequestParam("registryName") String registryName,@Valid @RequestParam("registrySurname") String registrySurname,@Valid @RequestParam("registryPassword") String registryPassword, Model model) {
         userService.saveNewUser(registryName, registrySurname, registryPassword);
         //adding parameters as attribute to show user details
         model.addAttribute("registryName", registryName);

@@ -2,6 +2,8 @@ package com.kamil.DocumentManager.models;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +16,7 @@ public class Document {
     private Long id;
 
     @Column(name = "documentName")
+    @NotBlank(message = "documentName can not be blank")
     private String documentName;
 
     @Column(name = "documentDescription")
@@ -29,6 +32,7 @@ public class Document {
     private LocalDateTime editionDate;
 
     @Column(name = "content")
+    @NotNull(message = "documentName can not be null")
     @Lob
     private byte[] content;
 

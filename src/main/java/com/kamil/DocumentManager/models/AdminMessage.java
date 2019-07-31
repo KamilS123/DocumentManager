@@ -1,6 +1,7 @@
 package com.kamil.DocumentManager.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "adminMessage")
@@ -11,6 +12,7 @@ public class AdminMessage {
     private Long id;
 
     @Column(name = "message")
+    @NotBlank(message = "message must be filled")
     private String message;
 
     @ManyToOne(fetch = FetchType.LAZY)

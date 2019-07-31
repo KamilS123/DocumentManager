@@ -1,5 +1,7 @@
 package com.kamil.DocumentManager.models;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,13 +13,16 @@ public class User {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
+    @NotBlank(message = "name must be filled")
     private String name;
 
-    @Column(name = "surname", unique = true)
+    @Column(name = "surname")
+    @NotBlank(message = "surname must be filled")
     private String surname;
 
     @Column(name = "password")
+    @NotBlank(message = "password must be filled")
     private String password;
 
     @Column(name = "status")

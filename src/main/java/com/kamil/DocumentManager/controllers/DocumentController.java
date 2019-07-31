@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.*;
 import java.security.Principal;
 import java.util.*;
@@ -41,7 +42,7 @@ public class DocumentController {
 
     //catching details of new Document and saving them to database and going to userMainContent
     @RequestMapping("/selectDocument")
-    public String saveDocumentToDatabase(Principal principal, @RequestParam("choosenDocument") String choosenDocument, @RequestParam("documentName") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments) throws IOException {
+    public String saveDocumentToDatabase(Principal principal, @RequestParam("choosenDocument") String choosenDocument,@Valid @RequestParam("documentName") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments) throws IOException {
         log.log(Level.INFO, "Select document");
         return documentsService.saveDocToDatabase(principal, choosenDocument, documentName, documentComments, documentDescription);
     }
