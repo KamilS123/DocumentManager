@@ -47,7 +47,6 @@ public class DocumentsService {
 //        Comparator<Document> documentComparator = (s1,s2)->s1.getdocumentName().compareTo(s2.getdocumentName());
         } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
-            System.out.println();
         }
         log.log(Level.INFO, "Delete document");
         return documentList;

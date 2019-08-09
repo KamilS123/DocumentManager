@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,12 +45,9 @@ public class AdminServiceTest {
     }
 
     @Test
-    public void should_return_redirect_to__switch_default_value() {
-        //given
+    public void should_return_IllegalArgumentException_in__switch_default() {
         String passedData = "anyValue";
-        //when
-        //then
-        Assert.assertEquals("redirect:default value", adminService.adminRadioChoose(passedData));
+        assertThrows(IllegalArgumentException.class, ()-> adminService.adminRadioChoose(passedData));
     }
 
     @Test

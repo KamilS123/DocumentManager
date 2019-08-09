@@ -22,7 +22,7 @@ public class ModeratorService {
     @Autowired
     private UserService userService;
 
-    public String lockOrUnockUser(Principal principal, Long userID) {
+    public String lockUnlockUser(Principal principal, Long userID) {
         String redirectTrack = "";
         String status = "";
         String redirect = "";
@@ -52,7 +52,7 @@ public class ModeratorService {
         } else {
             redirectTrack = "redirect:showAllUsers";
         }
-        logger.log(Level.INFO, "lockOrUnockUser");
+        logger.log(Level.INFO, "lockUnlockUser");
         return redirectTrack;
     }
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -27,24 +28,6 @@ public class UserService {
 
     @Autowired
     private UserService userService;
-
-    //fetch logged user to get and return his id
-    public Long getLoggedUserId(Principal principal) {
-        Long id = 1L;
-        try {
-            String name = principal.getName();
-            List<User> userList = (List<User>) userRepository.findAll();
-            for (User user : userList) {
-                if (user.getName().equals(name)) {
-                    id = user.getId();
-                }
-            }
-        } catch (NullPointerException ex) {
-            ex.printStackTrace();
-        }
-        logger.log(Level.INFO, "getLoggedUserId");
-        return id;
-    }
 
     //get list of users with status "user"
     public List<User> getUsersWithStatusUser() {
@@ -85,7 +68,14 @@ public class UserService {
         return redirection;
     }
 
-    public void saveNewUser(String registryName, String registrySurname, String registryPassword) {
+    public void saveNewUser(String registryName, String registrySurname, String registryPassword) throws IllegalArgumentException {
+        List<User>userList = (List<User>) userRepository.findAll();
+        userList.stream()
+                .filter(s -> s.getName().equals(registryName))
+                .findFirst()
+                .ifPresent(s-> {
+                    throw new IllegalArgumentException("Username is already in database");
+                });
         try {
             User user = new User();
             user.setName(registryName);
@@ -162,5 +152,23 @@ public class UserService {
         userRepository.updateStatus(status, id);
         logger.log(Level.INFO, "changeStatusValue");
         return redirecion;
+    }
+
+    //fetch logged user to get and return his id
+    public Long getLoggedUserId(Principal principal) {
+        Long id = 1L;
+        try {
+            String name = principal.getName();
+            List<User> userList = (List<User>) userRepository.findAll();
+            for (User user : userList) {
+                if (user.getName().equals(name)) {
+                    id = user.getId();
+                }
+            }
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
+        logger.log(Level.INFO, "getLoggedUserId");
+        return id;
     }
 }

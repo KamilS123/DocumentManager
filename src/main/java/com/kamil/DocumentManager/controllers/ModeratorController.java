@@ -59,6 +59,6 @@ public class ModeratorController {
     @RequestMapping("/lockUnlock")
     public String lockUnlock(@RequestParam("userID")Long userID, Principal principal) {
         logger.log(Level.INFO,"lockUnlock");
-        return moderatorService.lockOrUnockUser(principal,userID);
+        return moderatorService.lockUnlockUser(principal,userID);
     }
 }

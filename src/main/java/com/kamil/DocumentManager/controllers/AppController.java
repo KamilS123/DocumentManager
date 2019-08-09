@@ -34,9 +34,9 @@ public class AppController {
 
     //from createdUser.jsp to login page
     @RequestMapping("/login")
-    public String login() {
+    public String login(Principal principal) {
         log.log(Level.INFO, "login");
-        return "login";
+        return userService.checkUserStatus(principal);
     }
 
     //from allUsersTable to moderatorMainContent
