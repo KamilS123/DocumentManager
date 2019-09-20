@@ -1,9 +1,12 @@
 package com.kamil.DocumentManager.models;
 
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 
 @Entity
@@ -110,6 +113,12 @@ public class Document {
 
     public byte[] getContent() {
         return content;
+    }
+
+    public String getDocContent() throws UnsupportedEncodingException {
+        byte[] encodeBase64 = Base64.encodeBase64(this.content);
+        String base64Encoded = new String(encodeBase64, "UTF-8");
+        return base64Encoded;
     }
 
     public void setContent(byte[] content) {

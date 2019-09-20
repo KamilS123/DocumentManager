@@ -42,9 +42,9 @@ public class DocumentController {
 
     //catching details of new Document and saving them to database and going to userMainContent
     @RequestMapping("/selectDocument")
-    public String saveDocumentToDatabase(Principal principal, @RequestParam("choosenDocument") String choosenDocument,@Valid @RequestParam("documentName") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments) throws IOException {
+    public String saveDocumentToDatabase(Principal principal,Model model, @RequestParam("choosenDocument") String choosenDocument,@Valid @RequestParam("documentName") String documentName, @RequestParam("documentDescription") String documentDescription, @RequestParam("documentComments") String documentComments) throws Exception {
         log.log(Level.INFO, "Select document");
-        return documentsService.saveDocToDatabase(principal, choosenDocument, documentName, documentComments, documentDescription);
+        return documentsService.saveDocToDatabase(principal,model, choosenDocument, documentName, documentComments, documentDescription);
     }
 
     //from userMainContent(menu) for editing choosen file. Showing list with documents
@@ -94,13 +94,14 @@ public class DocumentController {
 
     //view document
     @RequestMapping("/viewDocument")
-    public String viewDocument(@RequestParam("docID") Long id, Model model, HttpServletResponse response) throws UnsupportedEncodingException {
-        List<Document> documentList = (List<Document>) documentRepository.findAll();
+    public String viewDocument(@RequestParam("docID") Long id, Model model) throws UnsupportedEncodingException {
+        List<Document> documentList = documentRepository.findAll();
         String encodedObject = "";
         for (Document document : documentList) {
             if (document.getId() == id) {
-                byte[] encoded = Base64.getEncoder().encode(document.getContent());
-                encodedObject = new String(encoded, "utf-8");
+//                byte[] encoded = Base64.getEncoder().encode(document.getDocContent());
+//                encodedObject = new String(encoded, "utf-8");
+                encodedObject = document.getDocContent();
             }
             model.addAttribute("userImage", encodedObject);
         }

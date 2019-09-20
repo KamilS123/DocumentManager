@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.acls.model.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -95,7 +96,14 @@ public class DocumentsService {
         return "redirect:docMenuShow";
     }
 
-    public String saveDocToDatabase(Principal principal, String choosenDocument, String documentName, String documentComments, String documentDescription) throws IOException {
+    public String saveDocToDatabase(Principal principal, Model model, String choosenDocument, String documentName, String documentComments, String documentDescription) throws Exception {
+        String[]docName = choosenDocument.split("/");
+        if (!docName[docName.length-1].contains(".pdf")) {
+            model.addAttribute("errorInfo","Error. Must be .pdf");
+            return "createNewDocumentForm";
+        }else {
+            documentName = docName[docName.length-1];
+        }
         try {
             //prepare string with status of logged user
             String name = principal.getName();

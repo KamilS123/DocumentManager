@@ -28,7 +28,7 @@
             <td>${userStatus}</td>
         </tr>
     </table>
-    <form id="cratedUserBtn" method="post" action="/login">
+    <form id="cratedUserBtn" method="post" action="/">
         <input type="submit" value="Sign in"/>
     </form>
 </div>

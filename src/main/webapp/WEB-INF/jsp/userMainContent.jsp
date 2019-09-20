@@ -9,6 +9,10 @@
         background-image: url("img/middle.jpg");
         background-size: cover;
     }
+    .file_option{
+        width: 100%;
+        height: 50px;
+    }
 </style>
 <body>
 <div id="main">
@@ -27,7 +31,7 @@
         </form>
     </div>
     <div id="mainContentHeader">
-        <h1>Document Manager<%--<span style="color: black">${loginName} ${loginSurname}</span>--%></h1>
+        <h1>Document Manager</h1>
         <form method="post" action="/findDocByName">
             <input type="text" name="docNameToFind" placeholder="Find document by name..."/>
         </form>
@@ -80,28 +84,22 @@
                     <td>${element.getDocumentComment()}</td>
                     <td>${element.getAdditionDate()}</td>
                     <td>${element.getEditionDate()}</td>
-                    <td>
+                    <td >
                         <form method="post" action="editDocFromList">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
-                            <input type="submit" value="Edit"/>
+                            <input class="file_option" type="submit" value="Edit"/>
                         </form>
                     </td>
-                    <td>
+                    <td >
                         <form method="post" action="deleteDocument">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
-                            <input type="submit" value="Delete"/>
+                            <input class="file_option" type="submit" value="Delete"/>
                         </form>
                     </td>
-                    <td>
+                    <td >
                         <form method="post" action="viewDocument">
                             <input type="hidden" name="docID" value="${element.getId()}"/>
-                            <input type="submit" value="View"/>
-                        </form>
-                    </td>
-                    <td>
-                        <form method="post" action="downloadDocument">
-                            <input type="hidden" name="docID" value="${element.getId()}"/>
-                            <input type="submit" value="Download"/>
+                            <input class="file_option" type="submit" value="View"/>
                         </form>
                     </td>
                 </tr>
