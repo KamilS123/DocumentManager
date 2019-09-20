@@ -28,7 +28,7 @@
         </form>
         <form method="post" action="changeStatus">
             <input type="hidden" name="changeStatusValue" value="admin"/>
-            <input type="submit" value="Admin"/>
+            <input style="background-color: black; color: white;" type="submit" value="Admin"/>
         </form>
     </div>
     <div id="mainContentHeader">

@@ -19,7 +19,7 @@
     <div id="mainContentModeratorForm">
         <form method="post" action="changeStatus">
             <input type="hidden" name="changeStatusValue" value="user"/>
-            <input type="submit" value="User"/>
+            <input style="background-color: black; color: white;" type="submit" value="User"/>
         </form>
         <form method="post" action="changeStatus">
             <input type="hidden" name="changeStatusValue" value="moderator"/>
